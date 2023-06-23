@@ -24,21 +24,24 @@ const Layout = ({ children }) => {
 
     {
       name: "Profile",
-      path: `/doctor/profile/${user?user._id:""}`,
+      path: `/doctor/profile/${user ? user._id : ""}`,
       icon: "fa-solid fa-user",
     },
-  
   ];
 
-  const SidebarMenu = user ? (user.isAdmin ? adminMenu : user.isDoctor?doctorMenu:userMenu) : [];
+  const SidebarMenu = user
+    ? user.isAdmin
+      ? adminMenu
+      : user.isDoctor
+      ? doctorMenu
+      : userMenu
+    : [];
 
   const handleLogout = () => {
     localStorage.clear();
     message.success("Logout Successfully");
     navigate(`/login`);
   };
-
-  
 
   return (
     <>
@@ -53,12 +56,13 @@ const Layout = ({ children }) => {
               {SidebarMenu.map((menu) => {
                 const isActive = location.pathname === menu.path;
                 return (
-                  <>
-                    <div className={`menu-item ${isActive && "active"}`}>
-                      <i className={menu.icon}></i>
-                      <Link to={menu.path}>{menu.name}</Link>
-                    </div>
-                  </>
+                  <div
+                    className={`menu-item ${isActive && "active"}`}
+                    key={menu.name}
+                  >
+                    <i className={menu.icon}></i>
+                    <Link to={menu.path}>{menu.name}</Link>
+                  </div>
                 );
               })}
               <div className={`menu-item `} onClick={handleLogout}>
@@ -75,9 +79,8 @@ const Layout = ({ children }) => {
                   onClick={() => {
                     navigate(`/notification`);
                   }}
-
                 >
-                  <i class="fa-solid fa-bell"></i>
+                  <i className="fa-solid fa-bell"></i>
                 </Badge>
                 <Link to={"/profile"}>{user ? user.name : ""}</Link>
               </div>

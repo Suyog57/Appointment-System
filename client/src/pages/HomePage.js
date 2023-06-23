@@ -33,7 +33,7 @@ const HomePage = () => {
     <Layout>
       <h1 className="text-center">Home Page</h1>
       <Row>
-        {doctors && doctors.map((doctor) => <DoctorList doctor={doctor} />)}
+        {doctors && doctors.map((doctor) => <DoctorList doctor={doctor} key={doctor._id} />)}
       </Row>{" "}
     </Layout>
   );
