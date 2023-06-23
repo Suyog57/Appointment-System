@@ -1,123 +1,54 @@
-import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import HomePage from "./pages/HomePage";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
-import { useSelector } from "react-redux";
+import React, { lazy, Suspense } from "react";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+//components
 import Spinner from "./components/Spinner";
 import ProtectedRoute from "./components/ProtectedRoute";
 import PublicRoute from "./components/PublicRoute";
-import ApplyDoctor from "./pages/ApplyDoctor";
-import NotificationPage from "./pages/NotificationPage";
-import Users from "./pages/admin/Users";
-import Doctors from "./pages/admin/Doctors";
-import Profile from "./pages/doctor/Profile";
-import BookingPage from "./pages/BookingPage";
-import Appointments from "./pages/Appointments";
-import DoctorAppointments from "./pages/doctor/DoctorAppointments";
+//pages
+const HomePage = lazy(() => import("./pages/HomePage"));
+const Login = lazy(() => import("./pages/Login"));
+const Register = lazy(() => import("./pages/Register"));
+const ApplyDoctor = lazy(() => import("./pages/ApplyDoctor"));
+const NotificationPage = lazy(() => import("./pages/NotificationPage"));
+const Users = lazy(() => import("./pages/admin/Users"));
+const Doctors = lazy(() => import("./pages/admin/Doctors"));
+const Profile = lazy(() => import("./pages/doctor/Profile"));
+const BookingPage = lazy(() => import("./pages/BookingPage"));
+const Appointments = lazy(() => import("./pages/Appointments"));
+const DoctorAppointments = lazy(() =>
+  import("./pages/doctor/DoctorAppointments")
+);
 
 function App() {
-  const { loading } = useSelector((state) => state.alerts);
-
   return (
-    <>
-      <Router>
-        {loading ? (
-          <Spinner />
-        ) : (
-          <Routes>
-            <Route
-              path="/apply-doctor"
-              element={
-                <ProtectedRoute>
-                  <ApplyDoctor />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/admin/users"
-              element={
-                <ProtectedRoute>
-                  <Users />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/admin/doctors"
-              element={
-                <ProtectedRoute>
-                  <Doctors />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/doctor/profile/:id"
-              element={
-                <ProtectedRoute>
-                  <Profile />
-                </ProtectedRoute>
-              }
-            />
+    <BrowserRouter>
+      <Suspense fallback={<Spinner />}>
+        <Routes>
+          <Route element={<ProtectedRoute />}>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/apply-doctor" element={<ApplyDoctor />} />
+            <Route path="/admin/users" element={<Users />} />
+            <Route path="/admin/doctors" element={<Doctors />} />
+            <Route path="/doctor/profile/:id" element={<Profile />} />
+            <Route path="/notification" element={<NotificationPage />} />
             <Route
               path="/doctor/book-appointment/:doctorId"
-              element={
-                <ProtectedRoute>
-                  <BookingPage />
-                </ProtectedRoute>
-              }
+              element={<BookingPage />}
             />
-            <Route
-              path="/notification"
-              element={
-                <ProtectedRoute>
-                  <NotificationPage />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/login"
-              element={
-                <PublicRoute>
-                  <Login />
-                </PublicRoute>
-              }
-            />
-            <Route
-              path="/register"
-              element={
-                <PublicRoute>
-                  <Register />
-                </PublicRoute>
-              }
-            />
-            <Route
-              path="/appointments"
-              element={
-                <ProtectedRoute>
-                  <Appointments />
-                </ProtectedRoute>
-              }
-            />
+            <Route path="/appointments" element={<Appointments />} />
             <Route
               path="/doctor-appointments"
-              element={
-                <ProtectedRoute>
-                  <DoctorAppointments />
-                </ProtectedRoute>
-              }
+              element={<DoctorAppointments />}
             />
-            <Route
-              path="/"
-              element={
-                <ProtectedRoute>
-                  <HomePage />
-                </ProtectedRoute>
-              }
-            />
-          </Routes>
-        )}
-      </Router>
-    </>
+          </Route>
+          <Route element={<PublicRoute />}>
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+          </Route>
+          <Route path="*" element={<Navigate to={"/"} replace />} />
+        </Routes>
+      </Suspense>
+    </BrowserRouter>
   );
 }
 
