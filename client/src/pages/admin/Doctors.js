@@ -30,7 +30,7 @@ const Doctors = () => {
   const handleAccountStatus = async (record, status) => {
     try {
       const res = await axios.post(
-        `${process.env.REACT_APP_URL}+"/api/v1/admin/changeAccountStatus"`,
+        `${process.env.REACT_APP_URL}/api/v1/admin/changeAccountStatus`,
         { doctorId: record._id, userId: record.userId, status: status },
         {
           headers: {

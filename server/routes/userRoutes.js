@@ -5,21 +5,30 @@ const {
   authController,
   applyDoctorController,
   getAllNotificationController,
+  markAllNotificationController,
   deleteAllNotificationController,
   getAllDocotrsController,
   bookeAppointmnetController,
   bookingAvailabilityController,
   userAppointmentsController,
-
+  googleLogin,
+  forgetController,
+  resetpassController,
 } = require("../controllers/userController");
 
 const authMiddleware = require("../middlewares/authMiddleware");
 
 const router = express.Router();
 
+router.post(`/googlelogin`, googleLogin);
+
 router.post("/login", loginController);
 
 router.post("/register", registerController);
+
+router.post("/forget-password", forgetController);
+
+router.post("/reset-password", resetpassController);
 
 router.post("/getUserData", authMiddleware, authController);
 
@@ -29,6 +38,12 @@ router.post(
   "/get-all-notification",
   authMiddleware,
   getAllNotificationController
+);
+
+router.post(
+  "/mark-all-notification",
+  authMiddleware,
+  markAllNotificationController
 );
 
 router.post(
