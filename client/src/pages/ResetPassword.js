@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Form, Input, message } from "antd";
 import axios from "axios";
@@ -9,10 +9,9 @@ const ResetPassword = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { token } = useParams();
+
   const onfinishHandler = async (values) => {
-    console.log(values.password);
     try {
-      const password = values.passsword;
       dispatch(showLoading());
       const res = await axios.post(
         `${process.env.REACT_APP_URL}/api/v1/user/reset-password`,
@@ -31,6 +30,7 @@ const ResetPassword = () => {
       message.error("something went wrong");
     }
   };
+
   return (
     <div className="form-container ">
       <Form

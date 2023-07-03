@@ -1,12 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React from "react";
 import { Form, Input, message } from "antd";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { showLoading, hideLoading } from "../redux/features/alertSlice";
 
 const ForgetPassword = () => {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const onfinishHandler = async (values) => {
