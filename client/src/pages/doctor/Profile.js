@@ -17,30 +17,30 @@ const Profile = () => {
   const handleFinish = async (values) => {
     try {
       console.log(values);
-      dispatch(showLoading());
-      const res = await axios.post(
-        `${process.env.REACT_APP_URL}/api/v1/doctor/updateProfile`,
-        {
-          ...values,
-          userId: user._id,
-          timings: [
-            moment(values.timings[0]).format("HH:mm"),
-            moment(values.timings[1]).format("HH:mm"),
-          ],
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
-      dispatch(hideLoading());
-      if (res.data.success) {
-        message.success(res.data.message);
-        navigate(`/`);
-      } else {
-        message.error(res.data.success);
-      }
+      // dispatch(showLoading());
+      // const res = await axios.post(
+      //   `${process.env.REACT_APP_URL}/api/v1/doctor/updateProfile`,
+      //   {
+      //     ...values,
+      //     userId: user._id,
+      //     timings: [
+      //       moment(values.timings[0]).format("HH:mm"),
+      //       moment(values.timings[1]).format("HH:mm"),
+      //     ],
+      //   },
+      //   {
+      //     headers: {
+      //       Authorization: `Bearer ${localStorage.getItem("token")}`,
+      //     },
+      //   }
+      // );
+      // dispatch(hideLoading());
+      // if (res.data.success) {
+      //   message.success(res.data.message);
+      //   navigate(`/`);
+      // } else {
+      //   message.error(res.data.success);
+      // }
     } catch (error) {
       dispatch(hideLoading());
       console.log(error);
@@ -73,7 +73,7 @@ const Profile = () => {
 
   return (
     <Layout>
-      <h1>Doctor profile</h1>
+      <h1 className="m-2">Doctor profile:-</h1>
       {doctor && (
         <Form
           layout="vertical"
@@ -129,7 +129,7 @@ const Profile = () => {
                 <Input type="email" placeholder="your email address" />
               </Form.Item>
             </Col>
-          
+
             <Col xs={24} md={24} lg={8}>
               <Form.Item label="Website" name="website">
                 <Input type="text" placeholder="your website" />
@@ -193,7 +193,7 @@ const Profile = () => {
         </Form>
       )}
     </Layout>
-  )
-}
+  );
+};
 
-export default Profile
+export default Profile;
