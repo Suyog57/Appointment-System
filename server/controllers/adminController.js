@@ -21,7 +21,6 @@ const getAllUsersController = async (req, res) => {
 
 const getAllDoctorsController = async (req, res) => {
   try {
-    console.log('bruh');
     const doctors = await doctorModel.find({});
     return res.status(200).send({
       success: true,
@@ -46,7 +45,7 @@ const changeAccountStatusController = async (req, res) => {
     const notifcation = user.notifcation;
     notifcation.push({
       type: "doctor-account-request-updated",
-      message: `Your Doctor Account Request Has ${status} `,
+      message: `Your Doctor Account Request Has been ${status} `,
       onClickPath: "/notification",
     });
     user.isDoctor = status === "approved" ? true : false;

@@ -260,7 +260,7 @@ const getAllDocotrsController = async (req, res) => {
     const doctors = await doctorModel.find({ status: "approved" });
     return res.status(200).send({
       success: true,
-      message: "Docots Lists Fetched Successfully",
+      message: "Doctors Lists Fetched Successfully",
       data: doctors,
     });
   } catch (error) {
@@ -268,7 +268,7 @@ const getAllDocotrsController = async (req, res) => {
     return res.status(500).send({
       success: false,
       error,
-      message: "Errro WHile Fetching DOcotr",
+      message: "Error While Fetching Doctors",
     });
   }
 };
@@ -285,14 +285,14 @@ const bookeAppointmnetController = async (req, res) => {
     const user = await userModel.findOne({ _id: req.body.doctorInfo.userId });
     user.notifcation.push({
       type: "New-appointment-request",
-      message: `A nEw Appointment Request from ${req.body.userInfo.name}`,
+      message: `A new appointment request from ${req.body.userInfo.name}`,
       onCLickPath: "/user/appointments",
     });
     await user.save();
 
     res.status(200).send({
       success: true,
-      message: "Appointment Book succesfully",
+      message: "Appointment Booked succesfully",
     });
   } catch (error) {
     console.log(error);
