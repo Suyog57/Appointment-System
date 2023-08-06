@@ -5,6 +5,7 @@ const {
   changeAccountStatusController,
 
 } = require("../controllers/adminController");
+
 const authMiddleware = require("../middlewares/authMiddleware");
 
 const router = express.Router();

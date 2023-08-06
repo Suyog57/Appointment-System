@@ -103,6 +103,7 @@ const registerController = async (req, res) => {
 const loginController = async (req, res) => {
   try {
     const user = await userModel.findOne({ email: req.body.email });
+    console.log(user);
     if (!user) {
       return res
         .status(200)
@@ -114,11 +115,11 @@ const loginController = async (req, res) => {
         .status(200)
         .send({ message: "Invalid email or Password", success: false });
     }
-
+ 
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
       expiresIn: "1d",
     });
-
+    
     return res
       .status(200)
       .send({ message: "Login Success", success: true, token });

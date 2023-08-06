@@ -31,20 +31,20 @@ const Users = () => {
 
   const columns = [
     {
-      title: "Name",
+      title: <div className="text-sm md:text-base">Name</div>,
       dataIndex: "name",
     },
     {
-      title: "Email",
+      title: <div className="text-sm md:text-base">Email</div>,
       dataIndex: "email",
     },
     {
-      title: "Doctor",
+      title: <div className="text-sm md:text-base">IsDoctor</div>,
       dataIndex: "isDoctor",
       render: (text, record) => <span>{record.isDoctor ? "Yes" : "No"}</span>,
     },
     {
-      title: "Actions",
+      title: <div className="text-sm md:text-base">Actions</div>,
       dataIndex: "actions",
       render: (text, record) => (
         <div className="d-flex">
@@ -56,7 +56,7 @@ const Users = () => {
 
   return (
     <Layout>
-      <h1 className="text-center m-2">Users List</h1>
+      <h1 className="text-center m-2 text-xl md:text-3xl p-4">Users List</h1>
       <Table columns={columns} dataSource={users} />
     </Layout>
   );

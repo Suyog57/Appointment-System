@@ -37,7 +37,7 @@ const Login = () => {
   };
 
   const responseGoogleSuccess = async (response) => {
-    console.log(response)
+    console.log(response);
     // try {
     //   const res = await axios({
     //     method: "POST",
@@ -59,29 +59,42 @@ const Login = () => {
   };
 
   return (
-    <div className="form-container ">
+    <div
+      className="form-container min-h-screen flex items-center justify-center bg-cover bg-center bg-no-repeat"
+      style={{
+        backgroundImage: "url('/loginimage.jpg')",
+      }}
+    >
+      <img src="/loginimage.jpg" />
       <Form
         layout="vertical"
         onFinish={onfinishHandler}
-        className="register-form"
+        className="register-form shadow-md rounded-lg w-9/12 md:w-6/12 lg:w-3/12"
       >
-        <h3 className="text-center">Login Form </h3>
+        <h3 className="text-center text-3xl">Login Form </h3>
 
-        <Form.Item label="Email" name="email">
+        <Form.Item className="text-xl" label="Email" name="email">
           <Input type="email" required />
         </Form.Item>
-        <Form.Item label="Password" name="password">
+        <Form.Item className="text-xl" label="Password" name="password">
           <Input type="password" required />
         </Form.Item>
-        
-        <button className="btn btn-primary" type="submit">
-          Login
-        </button>
-        <br/>
-        <Link to={`/register`} className="m-2 mt-4">
+
+        <div className="flex justify-center">
+          <button
+            className="w-4/12 text-white text-base bg-blue-500 p-2 text-center rounded-md"
+            type="submit"
+          >
+            Login
+          </button>
+        </div>
+        <br />
+
+        <Link to={`/register`} className="m-2 mt-4 text-sm underline">
           Don't have an account?
         </Link>
-        <Link to={`/forget-password`} className="m-2 mt-4">
+        <br className="md:hidden"/>
+        <Link to={`/forget-password`} className="m-2 mt-4 underline">
           Forgot Password?
         </Link>
         {/* {process.env.REACT_APP_CLIENT_ID} */}

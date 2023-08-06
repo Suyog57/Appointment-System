@@ -7,10 +7,11 @@
 }
 
 .sidebar {
+  /* height: 57vh; */
   min-height: 100%;
   width: 300px;
   border-radius: 5px;
-  background-color: rgb(51, 1, 1);
+  background-color: rgb(1, 75, 165);
   box-shadow: 0 0 2px gray;
   margin-right: 20px;
   color: white;
@@ -22,6 +23,7 @@
 }
 
 .header {
+  /* width: 100vw; */
   height: 10vh;
   margin-bottom: 20px;
   box-shadow: 0 0 2px gray;
@@ -43,6 +45,7 @@
 }
 .menu-item {
   margin-top: 30px;
+  /* margin-bottom: 15px; */
 }
 .menu-item a {
   color: white;
@@ -59,7 +62,7 @@
 }
 .active a,
 .active i {
-  color: rgb(51, 1, 1);
+  color: rgb(1, 75, 165);
 }
 .header-content {
   display: flex;

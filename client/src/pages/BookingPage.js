@@ -66,7 +66,6 @@ const BookingPage = () => {
     }
   };
 
-
   const handleBooking = async () => {
     try {
       if (!date && !time) {
@@ -105,7 +104,7 @@ const BookingPage = () => {
   }, []);
   return (
     <Layout>
-      <h3>Booking Page</h3>
+      <h3 className="text-center text-3xl p-4">Booking Page</h3>
       <div className="container m-2">
         {doctors && (
           <div>
