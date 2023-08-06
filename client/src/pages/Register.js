@@ -14,11 +14,16 @@ const Register = () => {
     console.log(values);
     try {
       dispatch(showLoading());
-      const res = await axios.post(`${process.env.REACT_APP_URL}/api/v1/user/register`, values);
+      const res = await axios.post(
+        `${process.env.REACT_APP_URL}/api/v1/user/register`,
+        values
+      );
       dispatch(hideLoading());
       if (res.data.success) {
         message.success("Registration Successfull!");
-        navigate("/login");
+        setTimeout(() => {
+          navigate("/login");
+        }, 3000);
       } else {
         message.error(res.data.message);
       }
@@ -29,13 +34,18 @@ const Register = () => {
     }
   };
   return (
-    <div className="form-container ">
+    <div
+      className="form-container min-h-screen flex items-center justify-center bg-cover bg-center bg-no-repeat"
+      style={{
+        backgroundImage: "url('/loginimage.jpg')",
+      }}
+    >
       <Form
         layout="vertical"
         onFinish={onfinishHandler}
-        className="register-form"
+        className="register-form shadow-md rounded-lg w-9/12 md:w-6/12 lg:w-3/12"
       >
-        <h3 className="text-center">Register From</h3>
+        <h3 className="text-center text-3xl">Register Form </h3>
         <Form.Item label="Name" name="name">
           <Input type="text" required />
         </Form.Item>
@@ -45,12 +55,18 @@ const Register = () => {
         <Form.Item label="Password" name="password">
           <Input type="password" required />
         </Form.Item>
-        <Link to="/login" className="m-2">
-          Already user login here
+        <div className="flex justify-center">
+          <button
+            className="w-4/12 text-white text-base bg-blue-500 p-2 text-center rounded-md"
+            type="submit"
+          >
+            Register
+          </button>
+        </div>
+        <br />
+        <Link to="/login" className="m-2 mt-4 text-sm underline">
+          Already have an account?
         </Link>
-        <button className="btn btn-primary" type="submit">
-          Register
-        </button>
       </Form>
     </div>
   );

@@ -31,11 +31,11 @@ const Appointments = () => {
 
   const columns = [
     {
-      title: "ID",
+      title: <div className="text-sm md:text-base">ID</div>,
       dataIndex: "_id",
     },
     {
-      title: "Date & Time",
+      title: <div className="text-sm md:text-base">Date & Time</div>,
       dataIndex: "date",
       render: (text, record) => (
         <span>
@@ -45,13 +45,13 @@ const Appointments = () => {
       ),
     },
     {
-      title: "Status",
+      title: <div className="text-sm md:text-base">Status</div>,
       dataIndex: "status",
     },
   ];
   return (
     <Layout>
-      <h1>Appointments Lists</h1>
+      <h1 className="text-center p-4 text-xl md:text-3xl">Your Appointments Lists</h1>
       <Table columns={columns} dataSource={appointments} />
     </Layout>
   );

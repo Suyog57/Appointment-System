@@ -12,7 +12,7 @@ const NotificationPage = () => {
   const { user } = useSelector((state) => state.user);
 
   const [notifs, setNotifs] = useState([]);
-  const [seen, setSeen] = useState([1, 2, 2]);
+  const [seen, setSeen] = useState([]);
   const [myArray, setMyArray] = useState([]);
   const getAllNotifications = async () => {
     try {
@@ -28,28 +28,23 @@ const NotificationPage = () => {
           },
         }
       );
+      console.log(res.data);
 
       if (res.data.success) {
-        const newArray = [1, 2, 3]; // Example new array
-        setMyArray(newArray);
-        console.log(myArray);
-        // const arr1 = res.data.data.seennotifs,
-        //   arr2 = res.data.data.notifications;
-        // console.log(arr1);
-
-        // setSeen([]);
-        // setNotifs(arr2);
-        // console.log(seen);
-        message.success(res.data.message);
+        
+        setNotifs(res.data.notifcations);
+        setSeen(res.data.seennotifs);
+        
+        // message.success(res.data.message);
       } else {
-        message.success(res.data.message);
+        // message.success(res.data.message);
       }
       // console.log(notifications);
       // console.log(seennotifs);
     } catch (error) {
       // dispatch(hideLoading());
       console.log(error);
-      message.error("somthing went wrong");
+      // message.error("somthing went wrong");
     }
   };
 
@@ -115,12 +110,12 @@ const NotificationPage = () => {
 
   return (
     <Layout>
-      <h4 className="p-3 text-center">Notification Page</h4>
+      <h4 className="p-4 text-center text-3xl">Notification Page</h4>
       <Tabs className="p-2">
-        <Tabs.TabPane tab="unRead" key={0}>
+        <Tabs.TabPane tab="UnRead" key={0}>
           <div className="d-flex justify-content-end">
             <h4
-              className="p-2"
+              className="p-2 text-xl"
               onClick={handleMarkAllRead}
               style={{ cursor: "pointer" }}
             >
@@ -132,7 +127,7 @@ const NotificationPage = () => {
                 <div className="card m-2" style={{ cursor: "pointer" }}>
                   <div
                     className="card-text p-1"
-                    onClick={() => navigate(notificationMgs.onClickPath)}
+                    onClick={() => navigate('/doctor-appointments')}
                   >
                     {notificationMgs.message}
                   </div>
@@ -143,7 +138,7 @@ const NotificationPage = () => {
         <Tabs.TabPane tab="Read" key={1}>
           <div className="d-flex justify-content-end">
             <h4
-              className="p-2 text-primary"
+              className="p-2 text-primary text-xl"
               onClick={handleDeleteAllRead}
               style={{ cursor: "pointer" }}
             >
@@ -155,7 +150,7 @@ const NotificationPage = () => {
                 <div className="card m-2" style={{ cursor: "pointer" }}>
                   <div
                     className="card-text p-1"
-                    onClick={() => navigate(notificationMgs.onClickPath)}
+                    onClick={() => navigate('/doctor-appointments')}
                   >
                     {notificationMgs.message}
                   </div>

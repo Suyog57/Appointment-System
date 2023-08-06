@@ -26,7 +26,6 @@ const DoctorAppointments = () => {
   };
 
   useEffect(() => {
-    // console.log("wtfffff");
     getAppointments();
   }, []);
 
@@ -53,11 +52,11 @@ const DoctorAppointments = () => {
 
   const columns = [
     {
-      title: "ID",
+      title: <div className="text-sm md:text-base">ID</div>,
       dataIndex: "_id",
     },
     {
-      title: "Date & Time",
+      title: <div className="text-sm md:text-base">Date & Time</div>,
       dataIndex: "date",
       render: (text, record) => (
         <span>
@@ -67,11 +66,11 @@ const DoctorAppointments = () => {
       ),
     },
     {
-      title: "Status",
+      title: <div className="text-sm md:text-base">Status</div>,
       dataIndex: "status",
     },
     {
-      title: "Actions",
+      title: <div className="text-sm md:text-base">Actions</div>,
       dataIndex: "actions",
       render: (text, record) => (
         <div className="d-flex">
@@ -97,7 +96,7 @@ const DoctorAppointments = () => {
   ];
   return (
     <Layout>
-      <h1>Appointment List</h1>
+      <h1 className="text-center text-xl md:text-3xl p-4">Appointment List</h1>
       <Table columns={columns} dataSource={appointments} />
     </Layout>
   );

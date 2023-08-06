@@ -27,7 +27,6 @@ export default function ProtectedRoute({ children }) {
       dispatch(hideLoading());
       
       if (res.data.success) {
-        // console.log("wtffffff");
         dispatch(setUser(res.data.data));
       } else {
         localStorage.clear();

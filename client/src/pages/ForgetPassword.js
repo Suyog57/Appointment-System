@@ -32,17 +32,22 @@ const ForgetPassword = () => {
       <Form
         layout="vertical"
         onFinish={onfinishHandler}
-        className="register-form"
+        className="register-form shadow-md rounded-lg w-3/12"
       >
-        <h3 className="text-center">Forget Password </h3>
+        <h3 className="text-center text-3xl">Forgot Password? </h3>
 
         <Form.Item label="Email" name="email">
           <Input type="email" required />
         </Form.Item>
 
-        <button className="btn btn-primary" type="submit">
-          Submit
-        </button>
+        <div className="flex justify-center">
+          <button
+            className="w-4/12 text-white text-base bg-blue-500 p-2 text-center rounded-md"
+            type="submit"
+          >
+            Submit
+          </button>
+        </div>
       </Form>
     </div>
   );

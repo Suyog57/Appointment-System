@@ -17,30 +17,30 @@ const Profile = () => {
   const handleFinish = async (values) => {
     try {
       console.log(values);
-      // dispatch(showLoading());
-      // const res = await axios.post(
-      //   `${process.env.REACT_APP_URL}/api/v1/doctor/updateProfile`,
-      //   {
-      //     ...values,
-      //     userId: user._id,
-      //     timings: [
-      //       moment(values.timings[0]).format("HH:mm"),
-      //       moment(values.timings[1]).format("HH:mm"),
-      //     ],
-      //   },
-      //   {
-      //     headers: {
-      //       Authorization: `Bearer ${localStorage.getItem("token")}`,
-      //     },
-      //   }
-      // );
-      // dispatch(hideLoading());
-      // if (res.data.success) {
-      //   message.success(res.data.message);
-      //   navigate(`/`);
-      // } else {
-      //   message.error(res.data.success);
-      // }
+      dispatch(showLoading());
+      const res = await axios.post(
+        `${process.env.REACT_APP_URL}/api/v1/doctor/updateProfile`,
+        {
+          ...values,
+          userId: user._id,
+          timings: [
+            moment(values.timings[0]).format("HH:mm"),
+            moment(values.timings[1]).format("HH:mm"),
+          ],
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      dispatch(hideLoading());
+      if (res.data.success) {
+        message.success(res.data.message);
+        navigate(`/`);
+      } else {
+        message.error(res.data.success);
+      }
     } catch (error) {
       dispatch(hideLoading());
       console.log(error);
@@ -73,7 +73,7 @@ const Profile = () => {
 
   return (
     <Layout>
-      <h1 className="m-2">Doctor profile:-</h1>
+      <h1 className="m-2 text-center text-2xl ">Doctor profile:-</h1>
       {doctor && (
         <Form
           layout="vertical"
@@ -87,10 +87,11 @@ const Profile = () => {
             ],
           }}
         >
-          <h4 className="">Personal Details : </h4>
+          <h4 className="text-xl">Personal Details : </h4>
           <Row gutter={20}>
             <Col xs={24} md={24} lg={8}>
               <Form.Item
+                className="text-base"
                 label="First Name"
                 name="firstName"
                 required
@@ -101,6 +102,7 @@ const Profile = () => {
             </Col>
             <Col xs={24} md={24} lg={8}>
               <Form.Item
+                className="text-base"
                 label="Last Name"
                 name="lastName"
                 required
@@ -111,6 +113,7 @@ const Profile = () => {
             </Col>
             <Col xs={24} md={24} lg={8}>
               <Form.Item
+                className="text-base"
                 label="Phone No"
                 name="phone"
                 required
@@ -121,6 +124,7 @@ const Profile = () => {
             </Col>
             <Col xs={24} md={24} lg={8}>
               <Form.Item
+                className="text-base"
                 label="Email"
                 name="email"
                 required
@@ -131,12 +135,13 @@ const Profile = () => {
             </Col>
 
             <Col xs={24} md={24} lg={8}>
-              <Form.Item label="Website" name="website">
+              <Form.Item label="Website" name="website" className="text-base">
                 <Input type="text" placeholder="your website" />
               </Form.Item>
             </Col>
             <Col xs={24} md={24} lg={8}>
               <Form.Item
+                className="text-base"
                 label="Address"
                 name="address"
                 required
@@ -146,10 +151,11 @@ const Profile = () => {
               </Form.Item>
             </Col>
           </Row>
-          <h4>Professional Details :</h4>
+          <h4 className="text-xl">Professional Details :</h4>
           <Row gutter={20}>
             <Col xs={24} md={24} lg={8}>
               <Form.Item
+                className="text-base"
                 label="Specialization"
                 name="specialization"
                 required
@@ -160,6 +166,7 @@ const Profile = () => {
             </Col>
             <Col xs={24} md={24} lg={8}>
               <Form.Item
+                className="text-base"
                 label="Experience"
                 name="experience"
                 required
@@ -170,6 +177,7 @@ const Profile = () => {
             </Col>
             <Col xs={24} md={24} lg={8}>
               <Form.Item
+                className="text-base"
                 label="Fees Per Cunsaltation"
                 name="feesPerCunsaltation"
                 required
@@ -179,13 +187,18 @@ const Profile = () => {
               </Form.Item>
             </Col>
             <Col xs={24} md={24} lg={8}>
-              <Form.Item label="Timings" name="timings" required>
+              <Form.Item
+                label="Timings"
+                name="timings"
+                required
+                className="text-base"
+              >
                 <TimePicker.RangePicker format="HH:mm" />
               </Form.Item>
             </Col>
             <Col xs={24} md={24} lg={8}></Col>
             <Col xs={24} md={24} lg={8}>
-              <button className="btn btn-primary form-btn" type="submit">
+              <button className="p-2 mb-3 bg-blue-500 text-white md:p-3 md:text-base rounded-lg form-btn" type="submit">
                 Update
               </button>
             </Col>

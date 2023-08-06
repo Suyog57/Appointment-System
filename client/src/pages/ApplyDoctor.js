@@ -47,9 +47,9 @@ const ApplyDoctor = () => {
   };
   return (
     <Layout>
-      <h1 className="text-center">Apply Doctor</h1>
+      <h1 className="text-center text-3xl p-4">Apply Doctor</h1>
       <Form layout="vertical" onFinish={handleFinish} className="m-3">
-        <h4 className="">Personal Details : </h4>
+        <h4 className="text-xl">Personal Details : </h4>
         <Row gutter={20}>
           <Col xs={24} md={24} lg={8}>
             <Form.Item
@@ -107,7 +107,7 @@ const ApplyDoctor = () => {
             </Form.Item>
           </Col>
         </Row>
-        <h4>Professional Details :</h4>
+        <h4 className="text-xl">Professional Details :</h4>
         <Row gutter={20}>
           <Col xs={24} md={24} lg={8}>
             <Form.Item
@@ -146,7 +146,7 @@ const ApplyDoctor = () => {
           </Col>
           <Col xs={24} md={24} lg={8}></Col>
           <Col xs={24} md={24} lg={8}>
-            <button className="btn btn-primary form-btn" type="submit">
+            <button className="p-2 mb-3 bg-blue-500 text-white md:p-3 md:text-base rounded-lg form-btn" type="submit">
               Submit
             </button>
           </Col>

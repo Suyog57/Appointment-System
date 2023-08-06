@@ -16,6 +16,7 @@ app.use("/api/v1/user", require("./routes/userRoutes"));
 app.use("/api/v1/admin", require("./routes/adminRoutes"));
 app.use("/api/v1/doctor", require("./routes/doctorRoutes"));
 
+// console.log(process.env.MONGODB_URL);
 const port = process.env.PORT || 8080;
 
 app.listen(port, () => {

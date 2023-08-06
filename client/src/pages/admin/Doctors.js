@@ -8,7 +8,6 @@ const Doctors = () => {
   //getUsers
   const getDoctors = async () => {
     try {
-      // console.log("bruh");
       const res = await axios.get(
         `${process.env.REACT_APP_URL}/api/v1/admin/getAllDoctors`,
         {
@@ -17,7 +16,6 @@ const Doctors = () => {
           },
         }
       );
-      console.log("bruh");
 
       if (res.data.success) {
         setDoctors(res.data.data);
@@ -48,13 +46,12 @@ const Doctors = () => {
   };
 
   useEffect(() => {
-    // console.log("wtff");
     getDoctors();
   }, []);
 
   const columns = [
     {
-      title: "Name",
+      title: <div className="text-sm md:text-base">Name</div>,
       dataIndex: "name",
       render: (text, record) => (
         <span>
@@ -63,15 +60,15 @@ const Doctors = () => {
       ),
     },
     {
-      title: "Status",
+      title: <div className="text-sm md:text-base">Status</div>,
       dataIndex: "status",
     },
     {
-      title: "phone",
+      title: <div className="text-sm md:text-base">Phone</div>,
       dataIndex: "phone",
     },
     {
-      title: "Actions",
+      title: <div className="text-sm md:text-base">Actions</div>,
       dataIndex: "actions",
       render: (text, record) => (
         <div className="d-flex">
@@ -91,7 +88,7 @@ const Doctors = () => {
   ];
   return (
     <Layout>
-      <h1 className="text-center m-3">All Doctors</h1>
+      <h1 className="text-center m-3 text-xl md:text-3xl p-4">All Doctors</h1>
       <Table columns={columns} dataSource={doctors} />
     </Layout>
   );
