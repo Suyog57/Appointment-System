@@ -18,6 +18,7 @@ const DoctorAppointments = () => {
         }
       );
       if (res.data.success) {
+        console.log(res.data.data);
         setAppointments(res.data.data);
       }
     } catch (error) {
@@ -56,12 +57,16 @@ const DoctorAppointments = () => {
       dataIndex: "_id",
     },
     {
+      title: <div className="text-sm md:text-base">Patient</div>,
+      dataIndex: "userInfo",
+    },
+    {
       title: <div className="text-sm md:text-base">Date & Time</div>,
       dataIndex: "date",
       render: (text, record) => (
         <span>
           {moment(record.date).format("DD-MM-YYYY")} &nbsp;
-          {moment(record.time).format("HH:mm")}
+          {record.date.split("T")[1].slice(0, 5)}
         </span>
       ),
     },
@@ -80,7 +85,7 @@ const DoctorAppointments = () => {
                 className="btn btn-success"
                 onClick={() => handleStatus(record, "approved")}
               >
-                Approved
+                Approve
               </button>
               <button
                 className="btn btn-danger ms-2"

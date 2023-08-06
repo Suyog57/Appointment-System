@@ -28,6 +28,7 @@ const BookingPage = () => {
         }
       );
       if (res.data.success) {
+        console.log(user);
         setDoctors(res.data.data);
       }
     } catch (error) {
@@ -77,8 +78,8 @@ const BookingPage = () => {
         {
           doctorId: params.doctorId,
           userId: user._id,
-          doctorInfo: doctors,
-          userInfo: user,
+          doctorInfo: `${doctors.firstName} ${doctors.lastName}`,
+          userInfo: `user.name`,
           date: date,
           time: time,
         },
