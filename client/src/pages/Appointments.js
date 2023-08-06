@@ -18,6 +18,7 @@ const Appointments = () => {
         }
       );
       if (res.data.success) {
+        console.log(res.data.data);
         setAppointments(res.data.data);
       }
     } catch (error) {
@@ -35,12 +36,16 @@ const Appointments = () => {
       dataIndex: "_id",
     },
     {
+      title: <div className="text-sm md:text-base">Doctor</div>,
+      dataIndex: "doctorInfo",
+    },
+    {
       title: <div className="text-sm md:text-base">Date & Time</div>,
       dataIndex: "date",
       render: (text, record) => (
         <span>
           {moment(record.date).format("DD-MM-YYYY")} &nbsp;
-          {moment(record.time).format("HH:mm")}
+          {record.date.split("T")[1].slice(0, 5)}
         </span>
       ),
     },
@@ -51,7 +56,9 @@ const Appointments = () => {
   ];
   return (
     <Layout>
-      <h1 className="text-center p-4 text-xl md:text-3xl">Your Appointments Lists</h1>
+      <h1 className="text-center p-4 text-xl md:text-3xl">
+        Your Appointments Lists
+      </h1>
       <Table columns={columns} dataSource={appointments} />
     </Layout>
   );
