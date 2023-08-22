@@ -12,22 +12,38 @@ const ResetPassword = () => {
 
   const onfinishHandler = async (values) => {
     try {
-      const pass1=values.password1.trim();
-      const pass2=values.password2.trim();
-      values.password1=pass1;
-      values.password2=pass2;
-      
       dispatch(showLoading());
-      const res = await axios.post(
-        `${process.env.REACT_APP_URL}/api/v1/user/reset-password`,
-        { values, token }
-      );
-      dispatch(hideLoading());
-      if (res.data.success) {
-        message.success("Password reset succesful!");
-        setTimeout(() => {
-          navigate("/login");
-        }, 3000);
+
+      const pass1 = values.password1.trim();
+      const pass2 = values.password2.trim();
+      values.password1 = pass1;
+      values.password2 = pass2;
+      if (pass1 != pass2) {
+        dispatch(hideLoading());
+
+        return message.error("Both the passwords should be same!");
+      }
+
+      var passw = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/;
+
+      if (!values.password1.match(passw)) {
+        message.warning(
+          "Please enter strong password having length atleast 6 including atleast one number and one uppercase character"
+        );
+        dispatch(hideLoading());
+      } else {
+        const res = await axios.post(
+          `${process.env.REACT_APP_URL}/api/v1/user/reset-password`,
+          { values, token }
+        );
+
+        dispatch(hideLoading());
+        if (res.data.success) {
+          message.success("Password reset succesful!");
+          setTimeout(() => {
+            navigate("/login");
+          }, 3000);
+        }
       }
     } catch (error) {
       dispatch(hideLoading());
@@ -46,10 +62,14 @@ const ResetPassword = () => {
         <h3 className="text-center text-3xl">Reset Password </h3>
 
         <Form.Item label="Password" name="password">
-          <Input type="password" required placeholder="Enter your password"/>
+          <Input type="password" required placeholder="Enter your password" />
         </Form.Item>
         <Form.Item label="Confirm Password" name="password2">
-          <Input type="password" required placeholder="Enter same password again"/>
+          <Input
+            type="password"
+            required
+            placeholder="Enter same password again"
+          />
         </Form.Item>
 
         <div className="flex justify-center">

@@ -30,7 +30,7 @@ const doctorSchema = new mongoose.Schema(
     },
     specialization: {
       type: String,
-      required: [true, "specialization is require"],
+      required: [true, "specialization is required"],
     },
     experience: {
       type: String,
@@ -46,7 +46,7 @@ const doctorSchema = new mongoose.Schema(
     },
     timings: {
       type: Object,
-      required: [true, "wrok timing is required"],
+      required: [true, "work timing is required"],
     },
   },
   { timestamps: true }

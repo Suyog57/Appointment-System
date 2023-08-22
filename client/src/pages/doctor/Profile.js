@@ -16,7 +16,7 @@ const Profile = () => {
 
   const handleFinish = async (values) => {
     try {
-      // console.log(values);
+
       const start = `${String(values.timings[0].$d.getHours()).padStart(
         2,
         "0"
@@ -50,7 +50,7 @@ const Profile = () => {
     } catch (error) {
       dispatch(hideLoading());
       console.log(error);
-      message.error("Somthing Went Wrrong ");
+      message.error("Something Went Wrong ");
     }
   };
 
@@ -88,7 +88,6 @@ const Profile = () => {
           initialValues={{
             ...doctor,
             timings: [
-              // doctor.timings[0], doctor.timings[1]
               moment(doctor.timings[0], "HH:mm"),
               moment(doctor.timings[1], "HH:mm"),
             ],

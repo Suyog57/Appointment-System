@@ -130,9 +130,6 @@ const BookingPage = () => {
                 className="m-2"
                 format="DD-MM-YYYY"
                 onChange={(value) => {
-                  // console.log(value);
-
-                  // setIsAvailable(true);
                   setDate(value);
                 }}
               />
@@ -140,10 +137,7 @@ const BookingPage = () => {
                 format="HH:mm"
                 className="m-2"
                 onChange={(value) => {
-                  // setIsAvailable(true);
-                  // console.log(value);
                   setTime(value);
-                  // setTime(moment(value).format("HH:mm"));
                 }}
               />
               <button
