@@ -10,6 +10,10 @@ const ForgetPassword = () => {
   const onfinishHandler = async (values) => {
     try {
       dispatch(showLoading());
+
+      const email = values.email.trim();
+      values.email = email;
+
       const res = await axios.post(
         `${process.env.REACT_APP_URL}/api/v1/user/forget-password`,
         values

@@ -29,22 +29,14 @@ const NotificationPage = () => {
           },
         }
       );
-      // console.log(res.data);
 
       if (res.data.success) {
-        // console.log(res.data.data);
         setNotifs(res.data.data.notifications);
         setSeenNotifs(res.data.data.seennotifs);
-        console.log(notifs);
-        // dispatch(hideLoading());
-        // message.success(res.data.message);
       } else {
-        // message.error(res.data.message);
       }
     } catch (error) {
-      // dispatch(hideLoading());
       console.log(error);
-      // message.error("Something went wrong!");
     }
   };
 
@@ -77,7 +69,7 @@ const NotificationPage = () => {
           notifcation: [],
           seennotification: newSeenNotifications,
         };
-        console.log(updatedUser);
+
         dispatch(setUser(updatedUser));
         message.success(res.data.message);
         setSeen(true);
@@ -87,7 +79,6 @@ const NotificationPage = () => {
     } catch (error) {
       dispatch(hideLoading());
       console.log(error);
-      // message.error("something went wrong");
     }
   };
 
@@ -110,12 +101,11 @@ const NotificationPage = () => {
           notifcation: [],
           seennotification: [],
         };
-        console.log(updatedUser);
+
         dispatch(setUser(updatedUser));
         message.success(res.data.message);
         setSeen(false);
       } else {
-        // message.error(res.data.message);
       }
     } catch (error) {
       dispatch(hideLoading());

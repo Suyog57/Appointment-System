@@ -13,6 +13,7 @@ const getDoctorInfoController = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
+
     return res.status(500).send({
       success: false,
       error,
@@ -28,6 +29,7 @@ const updateProfileController = async (req, res) => {
       req.body,
       { new: true }
     );
+
     return res.status(201).send({
       success: true,
       message: "Doctor Profile Updated!",
@@ -35,6 +37,7 @@ const updateProfileController = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
+
     return res.status(500).send({
       success: false,
       message: "Doctor Profile Update issue",
@@ -46,6 +49,7 @@ const updateProfileController = async (req, res) => {
 const getDoctorByIdController = async (req, res) => {
   try {
     const doctor = await doctorModel.findOne({ _id: req.body.doctorId });
+
     res.status(200).send({
       success: true,
       message: "Single Doctor Info Fetched!",
@@ -53,6 +57,7 @@ const getDoctorByIdController = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
+
     res.status(500).send({
       success: false,
       error,
@@ -64,11 +69,11 @@ const getDoctorByIdController = async (req, res) => {
 const doctorAppointmentsController = async (req, res) => {
   try {
     const doctor = await doctorModel.findOne({ userId: req.body.userId });
-    console.log(doctor);
+
     const appointments = await appointmentModel.find({
       doctorId: doctor._id.toString(),
     });
-    // console.log(doctor._id.toString());
+
     res.status(200).send({
       success: true,
       message: "Doctor Appointments fetched Successfully!",
@@ -76,6 +81,7 @@ const doctorAppointmentsController = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
+
     res.status(500).send({
       success: false,
       error,
@@ -87,18 +93,21 @@ const doctorAppointmentsController = async (req, res) => {
 const updateStatusController = async (req, res) => {
   try {
     const { appointmentsId, status } = req.body;
+
     const appointments = await appointmentModel.findByIdAndUpdate(
       appointmentsId,
       { status }
     );
     
     const user = await userModel.findOne({ _id: appointments.userId });
+
     const notifcation = user.notifcation;
     notifcation.push({
       type: "status-updated",
       message: `Your appointment has been ${status}!`,
       onCLickPath: "/doctor-appointments",
     });
+
     await user.save();
 
     res.status(200).send({
@@ -108,6 +117,7 @@ const updateStatusController = async (req, res) => {
     
   } catch (error) {
     console.log(error);
+    
     res.status(500).send({
       success: false,
       error,

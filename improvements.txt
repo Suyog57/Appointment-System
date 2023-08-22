@@ -1,3 +1,0 @@
-notification page can be improved by fetching notifs using useeffect and can alos help in improving read/unread 
-
-timings issue in doctor profile

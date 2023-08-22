@@ -18,7 +18,7 @@ const Appointments = () => {
         }
       );
       if (res.data.success) {
-        console.log(res.data.data+'f');
+        // console.log(res.data.data+'f');
         setAppointments(res.data.data);
       }
     } catch (error) {

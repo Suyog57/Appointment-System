@@ -9,22 +9,27 @@ let nodemailer = require("nodemailer");
 const registerController = async (req, res) => {
   try {
     const exisitingUser = await userModel.findOne({ email: req.body.email });
+
     if (exisitingUser) {
       return res
         .status(200)
         .send({ message: "User Already Exists!", success: false });
     }
     const password = req.body.password;
+
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
     req.body.password = hashedPassword;
+
     const newUser = new userModel(req.body);
     await newUser.save();
+
     return res
       .status(201)
       .send({ message: "Registered Sucessfully!", success: true });
   } catch (error) {
     console.log(error);
+
     return res.status(500).send({
       success: false,
       message: `Register Controller ${error.message}`,
@@ -35,12 +40,13 @@ const registerController = async (req, res) => {
 const loginController = async (req, res) => {
   try {
     const user = await userModel.findOne({ email: req.body.email });
-    // console.log(user);
+
     if (!user) {
       return res
         .status(200)
         .send({ message: "User not found!", success: false });
     }
+
     const isMatch = await bcrypt.compare(req.body.password, user.password);
     if (!isMatch) {
       return res
@@ -55,6 +61,7 @@ const loginController = async (req, res) => {
     return res
       .status(200)
       .send({ message: "Login Success!", success: true, token });
+
   } catch (error) {
     console.log(error);
     res.status(500).send({ message: `Error in Login CTRL ${error.message}` });
@@ -65,6 +72,7 @@ const authController = async (req, res) => {
   try {
     const user = await userModel.findById({ _id: req.body.userId });
     user.password = undefined;
+
     if (!user) {
       return res.status(200).send({
         message: "User not found!",
@@ -78,6 +86,7 @@ const authController = async (req, res) => {
     }
   } catch (error) {
     console.log(error);
+
     return res.status(500).send({
       message: "auth error",
       success: false,
@@ -92,6 +101,7 @@ const applyDoctorController = async (req, res) => {
     await newDoctor.save();
 
     const adminUser = await userModel.findOne({ isAdmin: true });
+
     const notifcation = adminUser.notifcation;
     notifcation.push({
       type: "apply-doctor-request",
@@ -104,12 +114,14 @@ const applyDoctorController = async (req, res) => {
     });
 
     await userModel.findByIdAndUpdate(adminUser._id, { notifcation });
+
     return res.status(201).send({
       success: true,
       message: "Doctor Account Applied Successfully!",
     });
   } catch (error) {
     console.log(error);
+
     return res.status(500).send({
       success: false,
       error,
@@ -124,6 +136,7 @@ const getAllNotificationController = async (req, res) => {
 
     const notifications = user.notifcation;
     const seennotifs = user.seennotification;
+
     return res.status(200).send({
       success: true,
       message: "All notifications retrieved!",
@@ -131,6 +144,7 @@ const getAllNotificationController = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
+
     return res.status(500).send({
       message: "Error in retrieving notification!",
       success: false,
@@ -149,9 +163,9 @@ const markAllNotificationController = async (req, res) => {
     seennotification.push(...notifcation);
     user.notifcation = [];
     user.seennotification = seennotification;
-    console.log(user.seennotification);
 
     const updatedUser = await user.save();
+
     return res.status(200).send({
       success: true,
       message: "All notifications marked as read!",
@@ -159,6 +173,7 @@ const markAllNotificationController = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
+
     return res.status(500).send({
       message: "Error in notification",
       success: false,
@@ -172,14 +187,17 @@ const deleteAllNotificationController = async (req, res) => {
     const user = await userModel.findOne({ _id: req.body.userId });
     user.notifcation = [];
     user.seennotification = [];
+
     const updatedUser = await user.save();
     updatedUser.password = undefined;
+
     return res.status(200).send({
       success: true,
       message: "Notifications Deleted successfully",
       data: updatedUser,
     });
   } catch (error) {
+
     console.log(error);
     return res.status(500).send({
       success: false,
@@ -192,6 +210,7 @@ const deleteAllNotificationController = async (req, res) => {
 const getAllDocotrsController = async (req, res) => {
   try {
     const doctors = await doctorModel.find({ status: "approved" });
+
     return res.status(200).send({
       success: true,
       message: "Doctors Lists Fetched Successfully",
@@ -199,6 +218,7 @@ const getAllDocotrsController = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
+
     return res.status(500).send({
       success: false,
       error,
@@ -213,6 +233,7 @@ const bookeAppointmnetController = async (req, res) => {
     const doctor= await doctorModel.findById(req.body.doctorId);
 
     const user = await userModel.findById(doctor.userId);
+
     if (user) {
       user.notifcation.push({
         type: "New-appointment-request",
@@ -231,6 +252,7 @@ const bookeAppointmnetController = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
+
     res.status(500).send({
       success: false,
       error,
@@ -288,6 +310,7 @@ const bookingAvailabilityController = async (req, res) => {
     }
   } catch (error) {
     console.log(error);
+
     res.status(500).send({
       success: false,
       error,
@@ -301,6 +324,7 @@ const userAppointmentsController = async (req, res) => {
     const appointments = await appointmentModel.find({
       userId: req.body.userId,
     });
+
     res.status(200).send({
       success: true,
       message: "Users Appointments Fetch SUccessfully",
@@ -308,6 +332,7 @@ const userAppointmentsController = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
+
     res.status(500).send({
       success: false,
       error,
@@ -353,6 +378,7 @@ const forgetController = async (req, res) => {
           console.log("Email sent: " + info.response);
         }
       });
+
       res.status(200).send({
         success: true,
         message: "mail sent",
@@ -365,6 +391,7 @@ const forgetController = async (req, res) => {
     }
   } catch (error) {
     console.log(error);
+
     res.status(500).send({
       success: false,
       error,
@@ -380,12 +407,14 @@ const resetpassController = async (req, res) => {
         res.status(401).send({ success: false, message: "Invalid Token" });
       } else {
         const user = await userModel.findOne({ resetToken: req.body.token });
+
         if (user) {
           if (req.body.values.password) {
             const password = req.body.values.password;
             const salt = await bcrypt.genSalt(10);
             const hashedPassword = await bcrypt.hash(password, salt);
             user.password = hashedPassword;
+
             await user.save();
             res.status(200).send({
               success: true,
@@ -406,6 +435,7 @@ const resetpassController = async (req, res) => {
     });
   }
 };
+
 module.exports = {
   loginController,
   registerController,
