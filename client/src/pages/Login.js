@@ -44,11 +44,9 @@ const Login = () => {
   return (
     <div
       className="form-container min-h-screen flex items-center justify-center bg-cover bg-center bg-no-repeat"
-      style={{
-        backgroundImage: "url('/loginimage.jpg')",
-      }}
+      
     >
-      <img src="/loginimage.jpg" />
+      
       <Form
         layout="vertical"
         onFinish={onfinishHandler}
