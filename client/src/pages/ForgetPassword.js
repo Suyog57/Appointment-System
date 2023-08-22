@@ -37,7 +37,7 @@ const ForgetPassword = () => {
         <h3 className="text-center text-3xl">Forgot Password? </h3>
 
         <Form.Item label="Email" name="email">
-          <Input type="email" required />
+          <Input type="email" required placeholder="Enter your email"/>
         </Form.Item>
 
         <div className="flex justify-center">

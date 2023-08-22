@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, Link } from "react-router-dom";
 import { Form, Input, message } from "antd";
 import axios from "axios";
 import { useDispatch } from "react-redux";
@@ -12,6 +12,11 @@ const ResetPassword = () => {
 
   const onfinishHandler = async (values) => {
     try {
+      const pass1=values.password1.trim();
+      const pass2=values.password2.trim();
+      values.password1=pass1;
+      values.password2=pass2;
+      
       dispatch(showLoading());
       const res = await axios.post(
         `${process.env.REACT_APP_URL}/api/v1/user/reset-password`,
@@ -41,10 +46,10 @@ const ResetPassword = () => {
         <h3 className="text-center text-3xl">Reset Password </h3>
 
         <Form.Item label="Password" name="password">
-          <Input type="password" required />
+          <Input type="password" required placeholder="Enter your password"/>
         </Form.Item>
         <Form.Item label="Confirm Password" name="password2">
-          <Input type="password" required />
+          <Input type="password" required placeholder="Enter same password again"/>
         </Form.Item>
 
         <div className="flex justify-center">

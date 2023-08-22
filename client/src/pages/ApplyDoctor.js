@@ -15,16 +15,22 @@ const ApplyDoctor = () => {
 
   const handleFinish = async (values) => {
     try {
+      const start = `${String(values.timings[0].$d.getHours()).padStart(
+        2,
+        "0"
+      )}:${String(values.timings[0].$d.getMinutes()).padStart(2, "0")}`;
+      const end = `${String(values.timings[1].$d.getHours()).padStart(
+        2,
+        "0"
+      )}:${String(values.timings[1].$d.getMinutes()).padStart(2, "0")}`;
+
       dispatch(showLoading());
       const res = await axios.post(
         `${process.env.REACT_APP_URL}/api/v1/user/apply-doctor`,
         {
           ...values,
           userId: user._id,
-          timings: [
-            moment(values.timings[0]).format("HH:mm"),
-            moment(values.timings[1]).format("HH:mm"),
-          ],
+          timings: [start, end],
         },
         {
           headers: {
@@ -34,8 +40,11 @@ const ApplyDoctor = () => {
       );
       dispatch(hideLoading());
       if (res.data.success) {
-        message.success(res.data.success);
-        navigate("/");
+        message.success(res.data.message);
+
+        setTimeout(() => {
+          navigate("/");
+        }, 3000);
       } else {
         message.error(res.data.success);
       }
@@ -146,7 +155,10 @@ const ApplyDoctor = () => {
           </Col>
           <Col xs={24} md={24} lg={8}></Col>
           <Col xs={24} md={24} lg={8}>
-            <button className="p-2 mb-3 bg-blue-500 text-white md:p-3 md:text-base rounded-lg form-btn" type="submit">
+            <button
+              className="p-2 mb-3 bg-blue-500 text-white md:p-3 md:text-base rounded-lg form-btn"
+              type="submit"
+            >
               Submit
             </button>
           </Col>

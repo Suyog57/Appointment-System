@@ -6,81 +6,13 @@ const appointmentModel = require("../models/appointmentModel");
 const moment = require("moment");
 let nodemailer = require("nodemailer");
 
-// import { OAuth2Client } from "google-auth-library";
-const { OAuth2Client } = require("google-auth-library");
-const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
-
-const googleLogin = async (req, res) => {
-  const { idToken } = req.body;
-  client
-    .verifyIdToken({ idToken, audience: process.env.GOOGLE_CLIENT_ID })
-    .then((response) => {
-      const { email_verified, name, email } = response.payload;
-
-      if (email_verified) {
-        userModel.findOne({ email }).exec((err, user) => {
-          if (user) {
-            const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
-              expiresIn: "1d",
-            });
-
-            const { _id, email, name } = user;
-            return res.status(200).send({
-              token,
-              success: true,
-              message: "login success",
-              user: { _id, email, name },
-            });
-          } else {
-            const password = email + process.env.JWT_SECRET;
-
-            user = new userModel({ name, email, password });
-            user
-              .save((err, data) => {
-                if (err) {
-                  return res.status(400).send({
-                    success: false,
-                    message: "User signup failed with google",
-                  });
-                }
-                const token = jwt.sign(
-                  { _id: data._id },
-                  process.env.JWT_SECRET,
-                  { expiresIn: "1d" }
-                );
-                const { _id, email, name } = data;
-
-                return res.status(200).send({
-                  success: true,
-                  message: "signup success",
-                  token,
-                  user: { _id, email, name },
-                });
-              })
-              .catch((err) => {
-                return res.status(401).send({
-                  success: false,
-                  message: "signup error",
-                });
-              });
-          }
-        });
-      } else {
-        return res.status(400).send({
-          success: false,
-          message: "Google login failed. Try again",
-        });
-      }
-    });
-};
-
 const registerController = async (req, res) => {
   try {
     const exisitingUser = await userModel.findOne({ email: req.body.email });
     if (exisitingUser) {
       return res
         .status(200)
-        .send({ message: "User Already Exist", success: false });
+        .send({ message: "User Already Exists!", success: false });
     }
     const password = req.body.password;
     const salt = await bcrypt.genSalt(10);
@@ -90,7 +22,7 @@ const registerController = async (req, res) => {
     await newUser.save();
     return res
       .status(201)
-      .send({ message: "Register Sucessfully", success: true });
+      .send({ message: "Registered Sucessfully!", success: true });
   } catch (error) {
     console.log(error);
     return res.status(500).send({
@@ -103,26 +35,26 @@ const registerController = async (req, res) => {
 const loginController = async (req, res) => {
   try {
     const user = await userModel.findOne({ email: req.body.email });
-    console.log(user);
+    // console.log(user);
     if (!user) {
       return res
         .status(200)
-        .send({ message: "user not found", success: false });
+        .send({ message: "User not found!", success: false });
     }
     const isMatch = await bcrypt.compare(req.body.password, user.password);
     if (!isMatch) {
       return res
         .status(200)
-        .send({ message: "Invalid email or Password", success: false });
+        .send({ message: "Invalid Email or Password!", success: false });
     }
- 
+
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
       expiresIn: "1d",
     });
-    
+
     return res
       .status(200)
-      .send({ message: "Login Success", success: true, token });
+      .send({ message: "Login Success!", success: true, token });
   } catch (error) {
     console.log(error);
     res.status(500).send({ message: `Error in Login CTRL ${error.message}` });
@@ -135,7 +67,7 @@ const authController = async (req, res) => {
     user.password = undefined;
     if (!user) {
       return res.status(200).send({
-        message: "user not found",
+        message: "User not found!",
         success: false,
       });
     } else {
@@ -174,7 +106,7 @@ const applyDoctorController = async (req, res) => {
     await userModel.findByIdAndUpdate(adminUser._id, { notifcation });
     return res.status(201).send({
       success: true,
-      message: "Doctor Account Applied SUccessfully",
+      message: "Doctor Account Applied Successfully!",
     });
   } catch (error) {
     console.log(error);
@@ -194,13 +126,13 @@ const getAllNotificationController = async (req, res) => {
     const seennotifs = user.seennotification;
     return res.status(200).send({
       success: true,
-      message: "all notifications retrieved",
+      message: "All notifications retrieved!",
       data: { notifications, seennotifs },
     });
   } catch (error) {
     console.log(error);
     return res.status(500).send({
-      message: "Error in retrieving notification",
+      message: "Error in retrieving notification!",
       success: false,
       error,
     });
@@ -216,12 +148,13 @@ const markAllNotificationController = async (req, res) => {
 
     seennotification.push(...notifcation);
     user.notifcation = [];
-    user.seennotification = notifcation;
+    user.seennotification = seennotification;
+    console.log(user.seennotification);
 
     const updatedUser = await user.save();
     return res.status(200).send({
       success: true,
-      message: "all notification marked as read",
+      message: "All notifications marked as read!",
       data: updatedUser,
     });
   } catch (error) {
@@ -276,20 +209,21 @@ const getAllDocotrsController = async (req, res) => {
 
 const bookeAppointmnetController = async (req, res) => {
   try {
-    req.body.date = moment(req.body.date, "DD-MM-YYYY").toISOString();
-    req.body.time = moment(req.body.time, "HH:mm").toISOString();
     req.body.status = "pending";
+    const doctor= await doctorModel.findById(req.body.doctorId);
+
+    const user = await userModel.findById(doctor.userId);
+    if (user) {
+      user.notifcation.push({
+        type: "New-appointment-request",
+        message: `A new appointment request from ${req.body.userInfo}`,
+        onCLickPath: "/user/appointments",
+      });
+      await user.save();
+    }
 
     const newAppointment = new appointmentModel(req.body);
     await newAppointment.save();
-
-    const user = await userModel.findOne({ _id: req.body.doctorInfo.userId });
-    user.notifcation.push({
-      type: "New-appointment-request",
-      message: `A new appointment request from ${req.body.userInfo.name}`,
-      onCLickPath: "/user/appointments",
-    });
-    await user.save();
 
     res.status(200).send({
       success: true,
@@ -307,12 +241,32 @@ const bookeAppointmnetController = async (req, res) => {
 
 const bookingAvailabilityController = async (req, res) => {
   try {
-    const date = moment(req.body.date, "DD-MM-YYYY").toISOString();
-    const fromTime = moment(req.body.time, "HH:mm")
-      .subtract(1, "hours")
-      .toISOString();
-    const toTime = moment(req.body.time, "HH:mm").add(1, "hours").toISOString();
+
+    const date = req.body.date;
+
+    const [inputHours, inputMinutes] = req.body.time.split(":");
+
+    const originalTime = new Date();
+    originalTime.setHours(Number(inputHours));
+    originalTime.setMinutes(Number(inputMinutes));
+
+    const oneHourLater = new Date(originalTime);
+    oneHourLater.setHours(originalTime.getHours() + 1);
+
+    const oneHourEarlier = new Date(originalTime);
+    oneHourEarlier.setHours(originalTime.getHours() - 1);
+
+    const formatTime = (date) => {
+      const hours = String(date.getHours()).padStart(2, "0");
+      const minutes = String(date.getMinutes()).padStart(2, "0");
+      return `${hours}:${minutes}`;
+    };
+
+    const toTime = formatTime(oneHourLater);
+    const fromTime = formatTime(oneHourEarlier);
+
     const doctorId = req.body.doctorId;
+
     const appointments = await appointmentModel.find({
       doctorId,
       date,
@@ -324,7 +278,7 @@ const bookingAvailabilityController = async (req, res) => {
     if (appointments.length > 0) {
       return res.status(200).send({
         message: "Appointments not Availibale at this time",
-        success: true,
+        success: false,
       });
     } else {
       return res.status(200).send({
@@ -464,7 +418,6 @@ module.exports = {
   bookeAppointmnetController,
   bookingAvailabilityController,
   userAppointmentsController,
-  googleLogin,
   forgetController,
   resetpassController,
 };

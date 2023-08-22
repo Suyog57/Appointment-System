@@ -5,6 +5,7 @@ import { message, Table } from "antd";
 
 const Doctors = () => {
   const [doctors, setDoctors] = useState([]);
+  const [seen, setSeen] = useState(false);
   //getUsers
   const getDoctors = async () => {
     try {
@@ -38,7 +39,8 @@ const Doctors = () => {
       );
       if (res.data.success) {
         message.success(res.data.message);
-        window.location.reload();
+        setSeen(!seen);
+        // window.location.reload();
       }
     } catch (error) {
       message.error("Something Went Wrong");
@@ -47,7 +49,7 @@ const Doctors = () => {
 
   useEffect(() => {
     getDoctors();
-  }, []);
+  }, [seen]);
 
   const columns = [
     {
@@ -73,14 +75,23 @@ const Doctors = () => {
       render: (text, record) => (
         <div className="d-flex">
           {record.status === "pending" ? (
-            <button
-              className="btn btn-success"
-              onClick={() => handleAccountStatus(record, "approved")}
-            >
-              Approve
-            </button>
+            <div className="flex justify-center">
+              <button
+                className="btn btn-success mr-2"
+                onClick={() => handleAccountStatus(record, "approved")}
+              >
+                Approve
+              </button>
+
+              <button
+                className="btn btn-danger"
+                onClick={() => handleAccountStatus(record, "rejected")}
+              >
+                Reject
+              </button>
+            </div>
           ) : (
-            <button className="btn btn-danger">Reject</button>
+            <div className="text-sm md:text-base text-center">Reviewed</div>
           )}
         </div>
       ),
@@ -89,7 +100,7 @@ const Doctors = () => {
   return (
     <Layout>
       <h1 className="text-center m-3 text-xl md:text-3xl p-4">All Doctors</h1>
-      <Table columns={columns} dataSource={doctors} />
+      <Table className="overflow-x-auto" columns={columns} dataSource={doctors} pagination={{pageSize:7}}/>
     </Layout>
   );
 };

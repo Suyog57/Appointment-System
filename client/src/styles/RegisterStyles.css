@@ -18,3 +18,8 @@
   z-index: 9999;
   background-color: rgba(0, 0, 0, 0.588);
 }
+
+.bg-blue-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(59 130 246 / var(--tw-bg-opacity));
+}

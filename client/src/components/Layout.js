@@ -170,7 +170,7 @@ const Layout = ({ children }) => {
                 <Link to="/profile">{user ? user.name : ""}</Link>
               </div>
             </div>
-            <div className="body">{children}</div>
+            <div className="body md:h-[85vh]">{children}</div>
           </div>
         </div>
       </div>

@@ -6,14 +6,14 @@ const getAllUsersController = async (req, res) => {
     const users = await userModel.find({});
     return res.status(200).send({
       success: true,
-      message: "users data list",
+      message: "Users data list!",
       data: users,
     });
   } catch (error) {
     console.log(error);
     return res.status(500).send({
       success: false,
-      message: "erorr while fetching users",
+      message: "Error while fetching users",
       error,
     });
   }
@@ -24,14 +24,14 @@ const getAllDoctorsController = async (req, res) => {
     const doctors = await doctorModel.find({});
     return res.status(200).send({
       success: true,
-      message: "Doctors Data list",
+      message: "Doctors Data list!",
       data: doctors,
     });
   } catch (error) {
     console.log(error);
     return res.status(500).send({
       success: false,
-      message: "error while getting doctors data",
+      message: "Error while getting doctors data",
       error,
     });
   }
@@ -40,26 +40,46 @@ const getAllDoctorsController = async (req, res) => {
 const changeAccountStatusController = async (req, res) => {
   try {
     const { doctorId, status } = req.body;
-    const doctor = await doctorModel.findByIdAndUpdate(doctorId, { status });
-    const user = await userModel.findOne({ _id: doctor.userId });
-    const notifcation = user.notifcation;
-    notifcation.push({
-      type: "doctor-account-request-updated",
-      message: `Your Doctor Account Request Has been ${status} `,
-      onClickPath: "/notification",
-    });
-    user.isDoctor = status === "approved" ? true : false;
-    await user.save();
-    return res.status(201).send({
-      success: true,
-      message: "Account Status Updated",
-      data: doctor,
-    });
+    if (status === "approved") {
+      const doctor = await doctorModel.findByIdAndUpdate(doctorId, { status });
+      const user = await userModel.findOne({ _id: doctor.userId });
+      const notifcation = user.notifcation;
+      notifcation.push({
+        type: "doctor-account-request-updated",
+        message: `Your doctor account request has been ${status} `,
+        onClickPath: "/notification",
+      });
+      user.isDoctor = status === "approved" ? true : false;
+      await user.save();
+
+      return res.status(201).send({
+        success: true,
+        message: "Account Status Updated!",
+        data: doctor,
+      });
+    } else {
+      let doctor=await doctorModel.findById(doctorId);
+      const user = await userModel.findOne({ _id: doctor.userId });
+      const notifcation = user.notifcation;
+      notifcation.push({
+        type: "doctor-account-request-updated",
+        message: `Your doctor account request has been ${status} `,
+        onClickPath: "/notification",
+      });
+      await user.save();
+
+      await doctorModel.findByIdAndDelete(doctorId);
+      return res.status(201).send({
+        success: true,
+        message: "Account Status Updated!",
+        // data: doctor,
+      });
+    }
   } catch (error) {
     console.log(error);
     return res.status(500).send({
       success: false,
-      message: "Eror in Account Status",
+      message: "Error in Account Status",
       error,
     });
   }

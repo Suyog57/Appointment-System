@@ -11,7 +11,6 @@ const {
   bookeAppointmnetController,
   bookingAvailabilityController,
   userAppointmentsController,
-  googleLogin,
   forgetController,
   resetpassController,
 } = require("../controllers/userController");
@@ -19,8 +18,6 @@ const {
 const authMiddleware = require("../middlewares/authMiddleware");
 
 const router = express.Router();
-
-router.post(`/googlelogin`, googleLogin);
 
 router.post("/login", loginController);
 
