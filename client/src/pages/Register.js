@@ -27,7 +27,6 @@ const Register = () => {
         );
         dispatch(hideLoading());
       } else {
-
         const res = await axios.post(
           `${process.env.REACT_APP_URL}/api/v1/user/register`,
           values
@@ -49,10 +48,7 @@ const Register = () => {
     }
   };
   return (
-    <div
-      className="form-container min-h-screen flex items-center justify-center bg-cover bg-center bg-no-repeat"
-      
-    >
+    <div className="form-container min-h-screen flex items-center justify-center bg-cover bg-center bg-no-repeat">
       <Form
         layout="vertical"
         onFinish={onfinishHandler}
@@ -60,13 +56,13 @@ const Register = () => {
       >
         <h3 className="text-center text-3xl">Register Form </h3>
         <Form.Item label="Name" name="name">
-          <Input type="text" required placeholder="Enter your name"  />
+          <Input type="text" required placeholder="Enter your name" />
         </Form.Item>
         <Form.Item label="Email" name="email">
-          <Input type="email" required placeholder="Enter your email"/>
+          <Input type="email" required placeholder="Enter your email" />
         </Form.Item>
         <Form.Item label="Password" name="password">
-          <Input type="password" required placeholder="Enter your password"/>
+          <Input type="password" required placeholder="Enter your password" />
         </Form.Item>
         <div className="flex justify-center">
           <button
