@@ -11,21 +11,36 @@ const Register = () => {
   const dispatch = useDispatch();
 
   const onfinishHandler = async (values) => {
-    console.log(values);
     try {
       dispatch(showLoading());
-      const res = await axios.post(
-        `${process.env.REACT_APP_URL}/api/v1/user/register`,
-        values
-      );
-      dispatch(hideLoading());
-      if (res.data.success) {
-        message.success("Registration Successfull!");
-        setTimeout(() => {
-          navigate("/login");
-        }, 3000);
+      const name = values.name.trim();
+      values.name = name;
+      const email = values.email.trim();
+      const password = values.password.trim();
+      values.email = email;
+      values.password = password;
+
+      var passw = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/;
+      if (!values.password.match(passw)) {
+        message.warning(
+          "Please enter strong password having length atleast 6 including atleast one number and one uppercase character"
+        );
+        dispatch(hideLoading());
       } else {
-        message.error(res.data.message);
+
+        const res = await axios.post(
+          `${process.env.REACT_APP_URL}/api/v1/user/register`,
+          values
+        );
+        dispatch(hideLoading());
+        if (res.data.success) {
+          message.success("Registration Successfull!");
+          setTimeout(() => {
+            navigate("/login");
+          }, 3000);
+        } else {
+          message.error(res.data.message);
+        }
       }
     } catch (error) {
       dispatch(hideLoading());
@@ -47,13 +62,13 @@ const Register = () => {
       >
         <h3 className="text-center text-3xl">Register Form </h3>
         <Form.Item label="Name" name="name">
-          <Input type="text" required />
+          <Input type="text" required placeholder="Enter your name"  />
         </Form.Item>
         <Form.Item label="Email" name="email">
-          <Input type="email" required />
+          <Input type="email" required placeholder="Enter your email"/>
         </Form.Item>
         <Form.Item label="Password" name="password">
-          <Input type="password" required />
+          <Input type="password" required placeholder="Enter your password"/>
         </Form.Item>
         <div className="flex justify-center">
           <button

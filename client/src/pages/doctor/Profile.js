@@ -16,17 +16,23 @@ const Profile = () => {
 
   const handleFinish = async (values) => {
     try {
-      console.log(values);
+      // console.log(values);
+      const start = `${String(values.timings[0].$d.getHours()).padStart(
+        2,
+        "0"
+      )}:${String(values.timings[0].$d.getMinutes()).padStart(2, "0")}`;
+      const end = `${String(values.timings[1].$d.getHours()).padStart(
+        2,
+        "0"
+      )}:${String(values.timings[1].$d.getMinutes()).padStart(2, "0")}`;
+
       dispatch(showLoading());
       const res = await axios.post(
         `${process.env.REACT_APP_URL}/api/v1/doctor/updateProfile`,
         {
           ...values,
           userId: user._id,
-          timings: [
-            moment(values.timings[0]).format("HH:mm"),
-            moment(values.timings[1]).format("HH:mm"),
-          ],
+          timings: [start, end],
         },
         {
           headers: {
@@ -82,6 +88,7 @@ const Profile = () => {
           initialValues={{
             ...doctor,
             timings: [
+              // doctor.timings[0], doctor.timings[1]
               moment(doctor.timings[0], "HH:mm"),
               moment(doctor.timings[1], "HH:mm"),
             ],
@@ -198,7 +205,10 @@ const Profile = () => {
             </Col>
             <Col xs={24} md={24} lg={8}></Col>
             <Col xs={24} md={24} lg={8}>
-              <button className="p-2 mb-3 bg-blue-500 text-white md:p-3 md:text-base rounded-lg form-btn" type="submit">
+              <button
+                className="p-2 mb-3 bg-blue-500 text-white md:p-3 md:text-base rounded-lg form-btn"
+                type="submit"
+              >
                 Update
               </button>
             </Col>

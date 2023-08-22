@@ -3,12 +3,16 @@ import Layout from "./../../components/Layout";
 import axios from "axios";
 import moment from "moment";
 import { message, Table } from "antd";
+import { showLoading, hideLoading } from "../../redux/features/alertSlice";
+import { useSelector, useDispatch } from "react-redux";
 
 const DoctorAppointments = () => {
   const [appointments, setAppointments] = useState([]);
+  const dispatch = useDispatch();
 
   const getAppointments = async () => {
     try {
+      // dispatch(showLoading());
       const res = await axios.get(
         `${process.env.REACT_APP_URL}/api/v1/doctor/doctor-appointments`,
         {
@@ -17,6 +21,7 @@ const DoctorAppointments = () => {
           },
         }
       );
+      // dispatch(hideLoading());
       if (res.data.success) {
         console.log(res.data.data);
         setAppointments(res.data.data);
@@ -65,8 +70,8 @@ const DoctorAppointments = () => {
       dataIndex: "date",
       render: (text, record) => (
         <span>
-          {moment(record.date).format("DD-MM-YYYY")} &nbsp;
-          {record.date.split("T")[1].slice(0, 5)}
+          {record.date} &nbsp;
+          {record.time}
         </span>
       ),
     },
@@ -79,7 +84,7 @@ const DoctorAppointments = () => {
       dataIndex: "actions",
       render: (text, record) => (
         <div className="d-flex">
-          {record.status === "pending" && (
+          {record.status === "pending" ? (
             <div className="d-flex">
               <button
                 className="btn btn-success"
@@ -89,12 +94,12 @@ const DoctorAppointments = () => {
               </button>
               <button
                 className="btn btn-danger ms-2"
-                onClick={() => handleStatus(record, "reject")}
+                onClick={() => handleStatus(record, "rejected")}
               >
                 Reject
               </button>
             </div>
-          )}
+          ):(<div className="">Reviewed</div>)}
         </div>
       ),
     },
@@ -102,7 +107,7 @@ const DoctorAppointments = () => {
   return (
     <Layout>
       <h1 className="text-center text-xl md:text-3xl p-4">Appointment List</h1>
-      <Table columns={columns} dataSource={appointments} />
+      <Table className="overflow-x-auto" pagination={{pageSize:7}} columns={columns} dataSource={appointments} />
     </Layout>
   );
 };

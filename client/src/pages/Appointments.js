@@ -18,7 +18,7 @@ const Appointments = () => {
         }
       );
       if (res.data.success) {
-        console.log(res.data.data);
+        console.log(res.data.data+'f');
         setAppointments(res.data.data);
       }
     } catch (error) {
@@ -44,8 +44,8 @@ const Appointments = () => {
       dataIndex: "date",
       render: (text, record) => (
         <span>
-          {moment(record.date).format("DD-MM-YYYY")} &nbsp;
-          {record.date.split("T")[1].slice(0, 5)}
+          {(record.date)} &nbsp;
+          {record.time}
         </span>
       ),
     },
@@ -59,7 +59,7 @@ const Appointments = () => {
       <h1 className="text-center p-4 text-xl md:text-3xl">
         Your Appointments Lists
       </h1>
-      <Table columns={columns} dataSource={appointments} />
+      <Table pagination={{pageSize:7}} className="overflow-x-auto" columns={columns} dataSource={appointments} />
     </Layout>
   );
 };

@@ -7,11 +7,10 @@ import DoctorList from "../components/DoctorList.js";
 const HomePage = () => {
   const [doctors, setDoctors] = useState([]);
   // login user data
-  const getUserData = async () => {
+  const getAllDoctors = async () => {
     try {
       const res = await axios.get(
         `${process.env.REACT_APP_URL}/api/v1/user/getAllDoctors`,
-
         {
           headers: {
             Authorization: "Bearer " + localStorage.getItem("token"),
@@ -27,12 +26,12 @@ const HomePage = () => {
   };
 
   useEffect(() => {
-    getUserData();
+    getAllDoctors();
   }, []);
   return (
     <Layout>
-      <h1 className="text-center text-3xl p-4">Home Page</h1>
-      <Row>
+      <h1 className="text-center text-3xl p-4 ">Home Page</h1>
+      <Row className="flex justify-center">
         {doctors && doctors.map((doctor) => <DoctorList doctor={doctor} />)}
       </Row>{" "}
     </Layout>

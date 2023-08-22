@@ -5,15 +5,16 @@ import { useSelector, useDispatch } from "react-redux";
 import { showLoading, hideLoading } from "../redux/features/alertSlice";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { setUser } from "../redux/features/userSlice";
 
 const NotificationPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.user);
 
+  const [seen, setSeen] = useState(false);
   const [notifs, setNotifs] = useState([]);
-  const [seen, setSeen] = useState([]);
-  const [myArray, setMyArray] = useState([]);
+  const [seenNotifs, setSeenNotifs] = useState([]);
   const getAllNotifications = async () => {
     try {
       // dispatch(showLoading());
@@ -28,23 +29,22 @@ const NotificationPage = () => {
           },
         }
       );
-      console.log(res.data);
+      // console.log(res.data);
 
       if (res.data.success) {
-        
-        setNotifs(res.data.notifcations);
-        setSeen(res.data.seennotifs);
-        
+        // console.log(res.data.data);
+        setNotifs(res.data.data.notifications);
+        setSeenNotifs(res.data.data.seennotifs);
+        console.log(notifs);
+        // dispatch(hideLoading());
         // message.success(res.data.message);
       } else {
-        // message.success(res.data.message);
+        // message.error(res.data.message);
       }
-      // console.log(notifications);
-      // console.log(seennotifs);
     } catch (error) {
       // dispatch(hideLoading());
       console.log(error);
-      // message.error("somthing went wrong");
+      // message.error("Something went wrong!");
     }
   };
 
@@ -70,15 +70,24 @@ const NotificationPage = () => {
 
       dispatch(hideLoading());
       if (res.data.success) {
+        const newSeenNotifications = [...user.seennotification];
+        newSeenNotifications.push(...user.notifcation);
+        const updatedUser = {
+          ...user,
+          notifcation: [],
+          seennotification: newSeenNotifications,
+        };
+        console.log(updatedUser);
+        dispatch(setUser(updatedUser));
         message.success(res.data.message);
-        window.location.reload();
+        setSeen(true);
       } else {
         message.error(res.data.message);
       }
     } catch (error) {
       dispatch(hideLoading());
       console.log(error);
-      message.error("somthing went wrong");
+      // message.error("something went wrong");
     }
   };
 
@@ -96,15 +105,22 @@ const NotificationPage = () => {
       );
       dispatch(hideLoading());
       if (res.data.success) {
+        const updatedUser = {
+          ...user,
+          notifcation: [],
+          seennotification: [],
+        };
+        console.log(updatedUser);
+        dispatch(setUser(updatedUser));
         message.success(res.data.message);
-        window.location.reload();
+        setSeen(false);
       } else {
-        message.error(res.data.message);
+        // message.error(res.data.message);
       }
     } catch (error) {
       dispatch(hideLoading());
       console.log(error);
-      message.error("Somthing Went Wrong In Ntifications");
+      // message.error("Something Went Wrong In Notifications");
     }
   };
 
@@ -114,49 +130,92 @@ const NotificationPage = () => {
       <Tabs className="p-2">
         <Tabs.TabPane tab="UnRead" key={0}>
           <div className="d-flex justify-content-end">
-            <h4
-              className="p-2 text-xl"
-              onClick={handleMarkAllRead}
-              style={{ cursor: "pointer" }}
-            >
-              Mark All Read
-            </h4>
+            {user ? (
+              user.notifcation.length > 0 ? (
+                <h4
+                  className="p-2 text-md md:text-xl"
+                  onClick={handleMarkAllRead}
+                  style={{ cursor: "pointer" }}
+                >
+                  Mark All Read
+                </h4>
+              ) : (
+                <h4 className="p-2 text-md md:text-xl" style={{ cursor: "no-drop" }}>
+                  Mark All Read
+                </h4>
+              )
+            ) : (
+              ""
+            )}
           </div>
-          {user
-            ? user.notifcation.map((notificationMgs) => (
+          {user ? (
+            user.notifcation.length > 0 ? (
+              user.notifcation.map((notificationMgs) => (
                 <div className="card m-2" style={{ cursor: "pointer" }}>
                   <div
                     className="card-text p-1"
-                    onClick={() => navigate('/doctor-appointments')}
+                    onClick={() => {
+                      user.isAdmin
+                        ? navigate("/admin/doctors")
+                        : user.isDoctor
+                        ? navigate("/doctor-appointments")
+                        : navigate("/appointments");
+                    }}
                   >
                     {notificationMgs.message}
                   </div>
                 </div>
               ))
-            : ""}
+            ) : (
+              <h3 className="text-center text-2xl">No notifications!</h3>
+            )
+          ) : (
+            ""
+          )}
+          
         </Tabs.TabPane>
         <Tabs.TabPane tab="Read" key={1}>
           <div className="d-flex justify-content-end">
-            <h4
-              className="p-2 text-primary text-xl"
-              onClick={handleDeleteAllRead}
-              style={{ cursor: "pointer" }}
-            >
-              Delete All Read
-            </h4>
+            {user ? (
+              user.seennotification.length > 0 ? (
+                <h4
+                  className="p-2 text-primary text-md md:text-xl"
+                  onClick={handleDeleteAllRead}
+                  style={{ cursor: "pointer" }}
+                >
+                  Delete All Read
+                </h4>
+              ) : (
+                <h4
+                  className="p-2 text-primary text-md md:text-xl"
+                  style={{ cursor: "no-drop" }}
+                >
+                  Delete All Read
+                </h4>
+              )
+            ) : (
+              ""
+            )}
           </div>
-          {user
-            ? user.seennotification.map((notificationMgs) => (
+          {user ? (
+            user.seennotification.length > 0 ? (
+              user.seennotification.map((notificationMgs) => (
                 <div className="card m-2" style={{ cursor: "pointer" }}>
                   <div
                     className="card-text p-1"
-                    onClick={() => navigate('/doctor-appointments')}
+                    onClick={() => navigate("/doctor-appointments")}
                   >
                     {notificationMgs.message}
                   </div>
                 </div>
               ))
-            : ""}
+            ) : (
+              <h3 className="text-center text-2xl">No notifications!</h3>
+            )
+          ) : (
+            ""
+          )}
+          
         </Tabs.TabPane>
       </Tabs>
     </Layout>

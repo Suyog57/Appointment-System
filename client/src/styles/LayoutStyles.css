@@ -1,9 +1,12 @@
 .main {
   padding: 10px;
   height: 100vh;
+  /* position: fixed; */
 }
 .layout {
   display: flex;
+  /* position: sticky;
+  top:0; */
 }
 
 .sidebar {
@@ -30,7 +33,7 @@
   background-color: white;
 }
 .body {
-  height: 85vh;
+  /* height: 85vh; */
   margin-bottom: 20px;
   box-shadow: 0 0 2px gray;
   background-color: white;

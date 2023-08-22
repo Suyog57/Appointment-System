@@ -57,7 +57,7 @@ const Users = () => {
   return (
     <Layout>
       <h1 className="text-center m-2 text-xl md:text-3xl p-4">Users List</h1>
-      <Table columns={columns} dataSource={users} />
+      <Table className="overflow-x-auto" columns={columns} dataSource={users} pagination={{pageSize:7}} />
     </Layout>
   );
 };

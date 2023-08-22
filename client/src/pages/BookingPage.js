@@ -13,7 +13,7 @@ const BookingPage = () => {
   const [doctors, setDoctors] = useState([]);
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
-  const [isAvailable, setIsAvailable] = useState();
+  const [isAvailable, setIsAvailable] = useState(false);
   const dispatch = useDispatch();
 
   const getUserData = async () => {
@@ -28,7 +28,7 @@ const BookingPage = () => {
         }
       );
       if (res.data.success) {
-        console.log(user);
+        // console.log(user);
         setDoctors(res.data.data);
       }
     } catch (error) {
@@ -39,24 +39,26 @@ const BookingPage = () => {
   const handleAvailability = async (e) => {
     e.preventDefault();
     try {
-      setIsAvailable(true);
-      if (!date && !time) {
-        return alert("Date & Time Required");
+      if (!date || !time) {
+        message.warning("Date & Time Required!");
+        return;
       }
-      dispatch(showLoading());
+      const newTime = `${String(time.$d.getHours()).padStart(2, '0')}:${String(time.$d.getMinutes()).padStart(2, '0')}`;
+
+      const newDate=`${String(date.$d.getDate()).padStart(2, '0')}-${String(date.$d.getMonth()+1).padStart(2, '0')}-${String(date.$d.getFullYear())}`;
+
       const res = await axios.post(
         `${process.env.REACT_APP_URL}/api/v1/user/booking-availbility`,
-        { doctorId: params.doctorId, date, time },
+        { doctorId: params.doctorId, date:newDate, time:newTime},
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         }
       );
-      dispatch(hideLoading());
+      // dispatch(hideLoading());
       if (res.data.success) {
         setIsAvailable(true);
-        console.log(isAvailable);
         message.success(res.data.message);
       } else {
         message.error(res.data.message);
@@ -69,19 +71,22 @@ const BookingPage = () => {
 
   const handleBooking = async () => {
     try {
-      if (!date && !time) {
+      if (!date || !time) {
         return alert("Date & Time Required");
       }
-      dispatch(showLoading());
+      // dispatch(showLoading());
+      const newTime = `${String(time.$d.getHours()).padStart(2, '0')}:${String(time.$d.getMinutes()).padStart(2, '0')}`;
+      const newDate=`${String(date.$d.getDate()).padStart(2, '0')}-${String(date.$d.getMonth()+1).padStart(2, '0')}-${String(date.$d.getFullYear())}`;
+
       const res = await axios.post(
         `${process.env.REACT_APP_URL}/api/v1/user/book-appointment`,
         {
           doctorId: params.doctorId,
           userId: user._id,
           doctorInfo: `${doctors.firstName} ${doctors.lastName}`,
-          userInfo: `user.name`,
-          date: date,
-          time: time,
+          userInfo: `${user.name}`,
+          date: newDate,
+          time: newTime,
         },
         {
           headers: {
@@ -89,9 +94,11 @@ const BookingPage = () => {
           },
         }
       );
-      dispatch(hideLoading());
+      // dispatch(hideLoading());
       if (res.data.success) {
         message.success(res.data.message);
+      }else {
+        message.error(res.data.message);
       }
     } catch (error) {
       dispatch(hideLoading());
@@ -105,44 +112,53 @@ const BookingPage = () => {
   }, []);
   return (
     <Layout>
-      <h3 className="text-center text-3xl p-4">Booking Page</h3>
-      <div className="container m-2">
+      <h3 className="text-center text-2xl md:text-3xl p-4">Booking Page</h3>
+      <div className="container m-2 pb-4">
         {doctors && (
           <div>
-            <h4>
+            <h3 className="text-xl md:text-2xl">
               Dr. {doctors.firstName} {doctors.lastName}
-            </h4>
-            <h4>Fees : {doctors.feesPerCunsaltation}</h4>
-            <h4>
+            </h3>
+            <h3 className="text-xl md:text-2xl">Fees : {doctors.feesPerCunsaltation}</h3>
+            <h3 className="text-xl md:text-2xl">
               Timings : {doctors.timings && doctors.timings[0]} -{" "}
               {doctors.timings && doctors.timings[1]}{" "}
-            </h4>
+            </h3>
 
             <div className="d-flex flex-column w-50">
               <DatePicker
                 className="m-2"
                 format="DD-MM-YYYY"
                 onChange={(value) => {
-                  setIsAvailable(true);
-                  setDate(moment(value).format("DD-MM-YYYY"));
+                  // console.log(value);
+
+                  // setIsAvailable(true);
+                  setDate(value);
                 }}
               />
               <TimePicker
                 format="HH:mm"
                 className="m-2"
                 onChange={(value) => {
-                  setIsAvailable(true);
-                  setTime(moment(value).format("HH:mm"));
+                  // setIsAvailable(true);
+                  // console.log(value);
+                  setTime(value);
+                  // setTime(moment(value).format("HH:mm"));
                 }}
               />
               <button
-                className="btn btn-primary mt-2"
+                className="btn btn-primary mt-2 text-xs md:text-xl"
                 onClick={handleAvailability}
               >
                 Check Availability
               </button>
-              {true && (
-                <button className="btn btn-dark mt-2" onClick={handleBooking}>
+              {isAvailable && (
+                <button className="btn btn-dark mt-2 text-xs md:text-xl" onClick={handleBooking}>
+                  Book Now
+                </button>
+              )}
+              {!isAvailable && (
+                <button className="btn btn-dark mt-2 disabled text-xs md:text-xl" onClick={handleBooking}>
                   Book Now
                 </button>
               )}

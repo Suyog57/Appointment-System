@@ -5,7 +5,6 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { showLoading, hideLoading } from "../redux/features/alertSlice";
-// import { GoogleLogin } from "react-google-login";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -13,18 +12,24 @@ const Login = () => {
 
   const onfinishHandler = async (values) => {
     try {
+      const email = values.email.trim();
+      const password = values.password.trim();
+      values.email = email;
+      values.password = password;
+
       dispatch(showLoading());
       const res = await axios.post(
         `${process.env.REACT_APP_URL}/api/v1/user/login`,
         values
       );
-      window.location.reload();
 
       dispatch(hideLoading());
 
       if (res.data.success) {
+        window.location.reload();
+
         localStorage.setItem("token", res.data.token);
-        message.success("Login Successfully");
+        message.success("Login Successful!");
         navigate(`/`);
       } else {
         message.error(res.data.message);
@@ -34,28 +39,6 @@ const Login = () => {
       console.log(error);
       message.error("something went wrong");
     }
-  };
-
-  const responseGoogleSuccess = async (response) => {
-    console.log(response);
-    // try {
-    //   const res = await axios({
-    //     method: "POST",
-    //     url: `${process.env.server_url}/api/v1/user/googlelogin`,
-    //     data: { idToken: response.tokenId },
-    //   });
-    //   console.log(res);
-    //   if (res.data.success) {
-    //     localStorage.setItem("token", res.data.token);
-    //     message.success("Login Successfully");
-    //     navigate(`/`);
-    //   }
-    // } catch (error) {
-    //   console.log(error);
-    // }
-  };
-  const responseGoogleError = (response) => {
-    console.log(response);
   };
 
   return (
@@ -74,10 +57,10 @@ const Login = () => {
         <h3 className="text-center text-3xl">Login Form </h3>
 
         <Form.Item className="text-xl" label="Email" name="email">
-          <Input type="email" required />
+          <Input type="email" required placeholder="Enter your email" />
         </Form.Item>
         <Form.Item className="text-xl" label="Password" name="password">
-          <Input type="password" required />
+          <Input type="password" required placeholder="Enter your password" />
         </Form.Item>
 
         <div className="flex justify-center">
@@ -93,19 +76,10 @@ const Login = () => {
         <Link to={`/register`} className="m-2 mt-4 text-sm underline">
           Don't have an account?
         </Link>
-        <br className="md:hidden"/>
+        <br className="md:hidden" />
         <Link to={`/forget-password`} className="m-2 mt-4 underline">
           Forgot Password?
         </Link>
-        {/* {process.env.REACT_APP_CLIENT_ID} */}
-        {/* <GoogleLogin
-          // clientId={process.env.REACT_APP_CLIENT_ID}
-          clientId="120196348856-e0qvv3qqpn4hmhb8fvkj2u3m26k59p2k.apps.googleusercontent.com"
-          buttonText="Login with google"
-          onSuccess={responseGoogleSuccess}
-          onFailure={responseGoogleError}
-          cookiePolicy="single_host_origin"
-        /> */}
       </Form>
     </div>
   );

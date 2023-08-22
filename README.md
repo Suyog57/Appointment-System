@@ -1,1 +1,2 @@
 # Appointment-System
+Introducing our Doctor Appointment Booking Project: a user-friendly platform for doctor applications and appointment bookings. Enjoy a seamless experience as you apply for doctor positions and schedule appointments with a wide range of healthcare professionals. Stay informed with instant notifications for doctor request acceptance and booking updates. Take control of your health journey with our efficient and convenient Doctor Appointment Booking Project.

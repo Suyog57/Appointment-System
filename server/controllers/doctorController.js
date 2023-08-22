@@ -5,9 +5,10 @@ const userModel = require("../models/userModels");
 const getDoctorInfoController = async (req, res) => {
   try {
     const doctor = await doctorModel.findOne({ userId: req.body.userId });
+
     return res.status(200).send({
       success: true,
-      message: "doctor data fetch success",
+      message: "Doctor data fetched successfully!",
       data: doctor,
     });
   } catch (error) {
@@ -15,7 +16,7 @@ const getDoctorInfoController = async (req, res) => {
     return res.status(500).send({
       success: false,
       error,
-      message: "Error in Fetching Doctor Details",
+      message: "Error in Fetching Doctor Details!",
     });
   }
 };
@@ -29,7 +30,7 @@ const updateProfileController = async (req, res) => {
     );
     return res.status(201).send({
       success: true,
-      message: "Doctor Profile Updated",
+      message: "Doctor Profile Updated!",
       data: doctor,
     });
   } catch (error) {
@@ -47,7 +48,7 @@ const getDoctorByIdController = async (req, res) => {
     const doctor = await doctorModel.findOne({ _id: req.body.doctorId });
     res.status(200).send({
       success: true,
-      message: "Sigle Doc Info Fetched",
+      message: "Single Doctor Info Fetched!",
       data: doctor,
     });
   } catch (error) {
@@ -55,7 +56,7 @@ const getDoctorByIdController = async (req, res) => {
     res.status(500).send({
       success: false,
       error,
-      message: "Erro in Single docot info",
+      message: "Error in Single doctor info",
     });
   }
 };
@@ -63,12 +64,14 @@ const getDoctorByIdController = async (req, res) => {
 const doctorAppointmentsController = async (req, res) => {
   try {
     const doctor = await doctorModel.findOne({ userId: req.body.userId });
+    console.log(doctor);
     const appointments = await appointmentModel.find({
-      doctorId: doctor._id,
+      doctorId: doctor._id.toString(),
     });
+    // console.log(doctor._id.toString());
     res.status(200).send({
       success: true,
-      message: "Doctor Appointments fetch Successfully",
+      message: "Doctor Appointments fetched Successfully!",
       data: appointments,
     });
   } catch (error) {
@@ -76,7 +79,7 @@ const doctorAppointmentsController = async (req, res) => {
     res.status(500).send({
       success: false,
       error,
-      message: "Error in Doc Appointments",
+      message: "Error in Doctor Appointments",
     });
   }
 };
@@ -93,14 +96,14 @@ const updateStatusController = async (req, res) => {
     const notifcation = user.notifcation;
     notifcation.push({
       type: "status-updated",
-      message: `your appointment has been updated ${status}`,
+      message: `Your appointment has been ${status}!`,
       onCLickPath: "/doctor-appointments",
     });
     await user.save();
 
     res.status(200).send({
       success: true,
-      message: "Appointment Status Updated",
+      message: "Appointment Status Updated!",
     });
     
   } catch (error) {
