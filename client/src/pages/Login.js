@@ -42,11 +42,7 @@ const Login = () => {
   };
 
   return (
-    <div
-      className="form-container min-h-screen flex items-center justify-center bg-cover bg-center bg-no-repeat"
-      
-    >
-      
+    <div className="form-container min-h-screen flex items-center justify-center bg-cover bg-center bg-no-repeat">
       <Form
         layout="vertical"
         onFinish={onfinishHandler}
