@@ -3,9 +3,8 @@ import Layout from "../components/Layout";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { DatePicker, message, TimePicker } from "antd";
-import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
-import { showLoading, hideLoading } from "../redux/features/alertSlice";
+import { hideLoading } from "../redux/features/alertSlice";
 
 const BookingPage = () => {
   const { user } = useSelector((state) => state.user);
@@ -43,13 +42,29 @@ const BookingPage = () => {
         message.warning("Date & Time Required!");
         return;
       }
-      const newTime = `${String(time.$d.getHours()).padStart(2, '0')}:${String(time.$d.getMinutes()).padStart(2, '0')}`;
+      const newTime = `${String(time.$d.getHours()).padStart(2, "0")}:${String(
+        time.$d.getMinutes()
+      ).padStart(2, "0")}`;
 
-      const newDate=`${String(date.$d.getDate()).padStart(2, '0')}-${String(date.$d.getMonth()+1).padStart(2, '0')}-${String(date.$d.getFullYear())}`;
+      const newDate = `${String(date.$d.getDate()).padStart(2, "0")}-${String(
+        date.$d.getMonth() + 1
+      ).padStart(2, "0")}-${String(date.$d.getFullYear())}`;
 
+      const today = new Date();
+      const month = today.getMonth() + 1;
+      const year = today.getFullYear();
+      const day = today.getDate();
+      const currentDate = day + "-" + month + "-" + year;
+      const currentTime = today.getHours() + ':' + today.getMinutes();
+
+      console.log(currentTime);
+      if(newDate<currentDate||newTime<currentTime){
+        message.error("Enter valid date & valid time!");
+        return;
+      }
       const res = await axios.post(
         `${process.env.REACT_APP_URL}/api/v1/user/booking-availbility`,
-        { doctorId: params.doctorId, date:newDate, time:newTime},
+        { doctorId: params.doctorId, date: newDate, time: newTime },
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -75,8 +90,12 @@ const BookingPage = () => {
         return alert("Date & Time Required");
       }
       // dispatch(showLoading());
-      const newTime = `${String(time.$d.getHours()).padStart(2, '0')}:${String(time.$d.getMinutes()).padStart(2, '0')}`;
-      const newDate=`${String(date.$d.getDate()).padStart(2, '0')}-${String(date.$d.getMonth()+1).padStart(2, '0')}-${String(date.$d.getFullYear())}`;
+      const newTime = `${String(time.$d.getHours()).padStart(2, "0")}:${String(
+        time.$d.getMinutes()
+      ).padStart(2, "0")}`;
+      const newDate = `${String(date.$d.getDate()).padStart(2, "0")}-${String(
+        date.$d.getMonth() + 1
+      ).padStart(2, "0")}-${String(date.$d.getFullYear())}`;
 
       const res = await axios.post(
         `${process.env.REACT_APP_URL}/api/v1/user/book-appointment`,
@@ -97,7 +116,7 @@ const BookingPage = () => {
       // dispatch(hideLoading());
       if (res.data.success) {
         message.success(res.data.message);
-      }else {
+      } else {
         message.error(res.data.message);
       }
     } catch (error) {
@@ -119,7 +138,9 @@ const BookingPage = () => {
             <h3 className="text-xl md:text-2xl">
               Dr. {doctors.firstName} {doctors.lastName}
             </h3>
-            <h3 className="text-xl md:text-2xl">Fees : {doctors.feesPerCunsaltation}</h3>
+            <h3 className="text-xl md:text-2xl">
+              Fees : {doctors.feesPerCunsaltation}
+            </h3>
             <h3 className="text-xl md:text-2xl">
               Timings : {doctors.timings && doctors.timings[0]} -{" "}
               {doctors.timings && doctors.timings[1]}{" "}
@@ -147,12 +168,18 @@ const BookingPage = () => {
                 Check Availability
               </button>
               {isAvailable && (
-                <button className="btn btn-dark mt-2 text-xs md:text-xl" onClick={handleBooking}>
+                <button
+                  className="btn btn-dark mt-2 text-xs md:text-xl"
+                  onClick={handleBooking}
+                >
                   Book Now
                 </button>
               )}
               {!isAvailable && (
-                <button className="btn btn-dark mt-2 disabled text-xs md:text-xl" onClick={handleBooking}>
+                <button
+                  className="btn btn-dark mt-2 disabled text-xs md:text-xl"
+                  onClick={handleBooking}
+                >
                   Book Now
                 </button>
               )}

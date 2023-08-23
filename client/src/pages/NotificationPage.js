@@ -13,8 +13,6 @@ const NotificationPage = () => {
   const { user } = useSelector((state) => state.user);
 
   const [seen, setSeen] = useState(false);
-  const [notifs, setNotifs] = useState([]);
-  const [seenNotifs, setSeenNotifs] = useState([]);
   const getAllNotifications = async () => {
     try {
       // dispatch(showLoading());
@@ -31,8 +29,8 @@ const NotificationPage = () => {
       );
 
       if (res.data.success) {
-        setNotifs(res.data.data.notifications);
-        setSeenNotifs(res.data.data.seennotifs);
+        // setNotifs(res.data.data.notifications);
+        // setSeenNotifs(res.data.data.seennotifs);
       } else {
       }
     } catch (error) {
