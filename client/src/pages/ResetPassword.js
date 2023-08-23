@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate, useParams, Link } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Form, Input, message } from "antd";
 import axios from "axios";
 import { useDispatch } from "react-redux";
@@ -18,7 +18,7 @@ const ResetPassword = () => {
       const pass2 = values.password2.trim();
       values.password1 = pass1;
       values.password2 = pass2;
-      if (pass1 != pass2) {
+      if (pass1 !== pass2) {
         dispatch(hideLoading());
 
         return message.error("Both the passwords should be same!");
