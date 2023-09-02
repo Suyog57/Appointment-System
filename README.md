@@ -28,5 +28,5 @@ The Doctor Appointment Booking Project is a web application designed to simplify
 <h3>Live link:-</h3>
 <ul>
   <li target="_blank">
-https://appointment-system-pegasus57.vercel.app/</li>
+https://appointment-system-pegasus57.vercel.app/login</li>
 </ul>
