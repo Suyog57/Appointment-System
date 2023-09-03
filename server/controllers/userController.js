@@ -292,6 +292,7 @@ const bookingAvailabilityController = async (req, res) => {
     const appointments = await appointmentModel.find({
       doctorId,
       date,
+      status:"pending"||"approved",
       time: {
         $gte: fromTime,
         $lte: toTime,

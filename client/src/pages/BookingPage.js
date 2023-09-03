@@ -51,15 +51,19 @@ const BookingPage = () => {
       ).padStart(2, "0")}-${String(date.$d.getFullYear())}`;
 
       const today = new Date();
-      const month = today.getMonth() + 1;
+      const month = String(today.getMonth() + 1).padStart(2, "0");
       const year = today.getFullYear();
-      const day = today.getDate();
+      const day = String(today.getDate()).padStart(2, "0");
       const currentDate = day + "-" + month + "-" + year;
-      const currentTime = today.getHours() + ':' + today.getMinutes();
+      const currentTime = String(today.getHours()).padStart(2, "0") + ':' + String(today.getMinutes()).padStart(2, "0");
 
-      console.log(currentTime);
-      if(newDate<currentDate||newTime<currentTime){
-        message.error("Enter valid date & valid time!");
+      console.log(currentTime, currentDate, newDate);
+      if(newDate<currentDate){
+        message.error("Enter valid date!");
+        return;
+      }
+      else if((newDate==currentDate&&newTime<currentTime)){
+        message.error("Enter valid time!");
         return;
       }
       const res = await axios.post(
