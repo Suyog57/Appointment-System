@@ -13,7 +13,7 @@ const ResetPassword = () => {
   const onfinishHandler = async (values) => {
     try {
       dispatch(showLoading());
-
+      // console.log(values.password1+" "+values.password2)
       const pass1 = values.password1.trim();
       const pass2 = values.password2.trim();
       values.password1 = pass1;
@@ -61,8 +61,11 @@ const ResetPassword = () => {
       >
         <h3 className="text-center text-3xl">Reset Password </h3>
 
-        <Form.Item label="Password" name="password">
-          <Input type="password" required placeholder="Enter your password" />
+        <Form.Item label="Password" name="password1">
+          <Input 
+          type="password" 
+          required 
+          placeholder="Enter your password" />
         </Form.Item>
         <Form.Item label="Confirm Password" name="password2">
           <Input

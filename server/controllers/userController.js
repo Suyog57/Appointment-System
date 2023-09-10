@@ -410,8 +410,8 @@ const resetpassController = async (req, res) => {
         const user = await userModel.findOne({ resetToken: req.body.token });
 
         if (user) {
-          if (req.body.values.password) {
-            const password = req.body.values.password;
+          if (req.body.values.password1) {
+            const password = req.body.values.password1;
             const salt = await bcrypt.genSalt(10);
             const hashedPassword = await bcrypt.hash(password, salt);
             user.password = hashedPassword;
