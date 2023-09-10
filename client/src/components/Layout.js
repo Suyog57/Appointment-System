@@ -95,10 +95,34 @@ const Layout = ({ children }) => {
       </div> */}
       <div className="main">
         <div className="layout">
-          <div className="sidebar hidden md:block">
+          <div
+            style={{
+              backgroundColor: user
+                ? user.isAdmin
+                  ? "teal"
+                  : user.isDoctor
+                  ? "indigo"
+                  : ""
+                : "",
+            }}
+            className="sidebar hidden md:block"
+          >
             <div className="logo">
               <h6 className="text-light">DOC APP</h6>
               <hr />
+            </div>
+            <div className="flex justify-center align-middle mt-4">
+              {user ? (
+                user.isAdmin ? (
+                  <h1 className="text-xl">Admin Panel</h1>
+                ) : user.isDoctor ? (
+                  <h1 className="text-xl">Doctor Panel</h1>
+                ) : (
+                  ""
+                )
+              ) : (
+                ""
+              )}
             </div>
             <div className="menu">
               {SidebarMenu.map((menu) => {
@@ -106,8 +130,36 @@ const Layout = ({ children }) => {
                 return (
                   <>
                     <div className={`menu-item ${isActive && "active"}`}>
-                      <i className={menu.icon}></i>
-                      <Link to={menu.path}>{menu.name}</Link>
+                      <i
+                        style={{
+                          color: isActive
+                            ? user
+                              ? user.isAdmin
+                                ? "teal"
+                                : user.isDoctor
+                                ? "indigo"
+                                : ""
+                              : "white"
+                            : "white",
+                        }}
+                        className={menu.icon}
+                      ></i>
+                      <Link
+                        style={{
+                          color: isActive
+                            ? user
+                              ? user.isAdmin
+                                ? "teal"
+                                : user.isDoctor
+                                ? "indigo"
+                                : ""
+                              : "white"
+                            : "white",
+                        }}
+                        to={menu.path}
+                      >
+                        {menu.name}
+                      </Link>
                     </div>
                   </>
                 );
@@ -122,10 +174,34 @@ const Layout = ({ children }) => {
           <div className="content">
             {/* mobile nav */}
             {isOpen && (
-              <div className="mb-4 width-[300px] bg-blue-700 text-white rounded-md shadow-md md:hidden">
+              <div
+                style={{
+                  backgroundColor: user
+                    ? user.isAdmin
+                      ? "teal"
+                      : user.isDoctor
+                      ? "indigo"
+                      : ""
+                    : "",
+                }}
+                className="mb-4 width-[300px] bg-blue-700 text-white rounded-md shadow-md md:hidden"
+              >
                 <div className="logo">
                   <h6 className="text-light pt-2">DOC APP</h6>
                   <hr />
+                </div>
+                <div className="flex justify-center align-middle mt-4">
+                  {user ? (
+                    user.isAdmin ? (
+                      <h1 className="text-xl">Admin Panel</h1>
+                    ) : user.isDoctor ? (
+                      <h1 className="text-xl">Doctor Panel</h1>
+                    ) : (
+                      ""
+                    )
+                  ) : (
+                    ""
+                  )}
                 </div>
                 <div className="menu">
                   {SidebarMenu.map((menu) => {
@@ -133,8 +209,37 @@ const Layout = ({ children }) => {
                     return (
                       <>
                         <div className={`menu-item ${isActive && "active"}`}>
-                          <i className={`${menu.icon} active:text-blue-700`}></i>
-                          <Link to={menu.path} className="active:text-blue-700">{menu.name}</Link>
+                          <i
+                            style={{
+                              color: isActive
+                                ? user
+                                  ? user.isAdmin
+                                    ? "teal"
+                                    : user.isDoctor
+                                    ? "indigo"
+                                    : ""
+                                  : "white"
+                                : "white",
+                            }}
+                            className={`${menu.icon} active:text-blue-700`}
+                          ></i>
+                          <Link
+                            style={{
+                              color: isActive
+                                ? user
+                                  ? user.isAdmin
+                                    ? "teal"
+                                    : user.isDoctor
+                                    ? "indigo"
+                                    : ""
+                                  : "white"
+                                : "white",
+                            }}
+                            to={menu.path}
+                            className="active:text-blue-700"
+                          >
+                            {menu.name}
+                          </Link>
                         </div>
                       </>
                     );
@@ -148,14 +253,18 @@ const Layout = ({ children }) => {
             )}
 
             <div className="header flex items-center">
-              {!isOpen&&<i
-                onClick={() => setIsOpen(!isOpen)}
-                className="ml-2 mr-4 fa-solid fa-list text-xl md:hidden"
-              />}
-              {isOpen&&<i
-                onClick={() => setIsOpen(!isOpen)}
-                className="ml-2 mr-4 fa-solid fa-close text-xl md:hidden"
-              />}
+              {!isOpen && (
+                <i
+                  onClick={() => setIsOpen(!isOpen)}
+                  className="ml-2 mr-4 fa-solid fa-list text-xl md:hidden"
+                />
+              )}
+              {isOpen && (
+                <i
+                  onClick={() => setIsOpen(!isOpen)}
+                  className="ml-2 mr-4 fa-solid fa-close text-xl md:hidden"
+                />
+              )}
 
               <div className="header-content" style={{ cursor: "pointer" }}>
                 <Badge
