@@ -20,7 +20,9 @@ const DoctorAppointments = () => {
       // dispatch(hideLoading());
       if (res.data.success) {
         console.log(res.data.data);
-        setAppointments(res.data.data);
+        const data = [...res.data.data].reverse();
+
+        setAppointments(data);
       }
     } catch (error) {
       console.log(error);
@@ -95,7 +97,9 @@ const DoctorAppointments = () => {
                 Reject
               </button>
             </div>
-          ):(<div className="">Reviewed</div>)}
+          ) : (
+            <div className="">Reviewed</div>
+          )}
         </div>
       ),
     },
@@ -103,7 +107,12 @@ const DoctorAppointments = () => {
   return (
     <Layout>
       <h1 className="text-center text-xl md:text-3xl p-4">Appointment List</h1>
-      <Table className="overflow-x-auto" pagination={{pageSize:7}} columns={columns} dataSource={appointments} />
+      <Table
+        className="overflow-x-auto"
+        pagination={{ pageSize: 7 }}
+        columns={columns}
+        dataSource={appointments}
+      />
     </Layout>
   );
 };

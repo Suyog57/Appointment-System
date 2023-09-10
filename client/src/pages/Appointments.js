@@ -17,8 +17,10 @@ const Appointments = () => {
         }
       );
       if (res.data.success) {
+        const data = [...res.data.data].reverse();
+
         // console.log(res.data.data+'f');
-        setAppointments(res.data.data);
+        setAppointments(data);
       }
     } catch (error) {
       console.log(error);
@@ -43,7 +45,7 @@ const Appointments = () => {
       dataIndex: "date",
       render: (text, record) => (
         <span>
-          {(record.date)} &nbsp;
+          {record.date} &nbsp;
           {record.time}
         </span>
       ),
@@ -58,7 +60,12 @@ const Appointments = () => {
       <h1 className="text-center p-4 text-xl md:text-3xl">
         Your Appointments Lists
       </h1>
-      <Table pagination={{pageSize:7}} className="overflow-x-auto" columns={columns} dataSource={appointments} />
+      <Table
+        pagination={{ pageSize: 7 }}
+        className="overflow-x-auto"
+        columns={columns}
+        dataSource={appointments}
+      />
     </Layout>
   );
 };

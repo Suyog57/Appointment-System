@@ -19,7 +19,8 @@ const Doctors = () => {
       );
 
       if (res.data.success) {
-        setDoctors(res.data.data);
+        const data=[...res.data.data].reverse();
+        setDoctors(data);
       }
     } catch (error) {
       console.log(error);
