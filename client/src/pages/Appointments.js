@@ -19,7 +19,6 @@ const Appointments = () => {
       if (res.data.success) {
         const data = [...res.data.data].reverse();
 
-        // console.log(res.data.data+'f');
         setAppointments(data);
       }
     } catch (error) {

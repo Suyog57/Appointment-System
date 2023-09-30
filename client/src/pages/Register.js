@@ -23,7 +23,7 @@ const Register = () => {
       var passw = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/;
       if (!values.password.match(passw)) {
         message.warning(
-          "Please enter strong password having length atleast 6 including atleast one number and one uppercase character"
+          "Please enter strong password having length atleast 6 including atleast one number, one uppercase, one lowercase character"
         );
         dispatch(hideLoading());
       } else {

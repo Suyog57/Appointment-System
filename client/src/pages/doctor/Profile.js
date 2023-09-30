@@ -16,7 +16,7 @@ const Profile = () => {
 
   const handleFinish = async (values) => {
     try {
-
+      console.log(values.timings[0].$d);
       const start = `${String(values.timings[0].$d.getHours()).padStart(
         2,
         "0"
