@@ -29,8 +29,6 @@ const NotificationPage = () => {
       );
 
       if (res.data.success) {
-        // setNotifs(res.data.data.notifications);
-        // setSeenNotifs(res.data.data.seennotifs);
       } else {
       }
     } catch (error) {

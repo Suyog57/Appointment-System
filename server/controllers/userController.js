@@ -3,7 +3,6 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const doctorModel = require("../models/doctorModel");
 const appointmentModel = require("../models/appointmentModel");
-const moment = require("moment");
 let nodemailer = require("nodemailer");
 
 const registerController = async (req, res) => {

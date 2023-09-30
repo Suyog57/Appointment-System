@@ -62,7 +62,7 @@ const BookingPage = () => {
         message.error("Enter valid date!");
         return;
       }
-      else if((newDate==currentDate&&newTime<currentTime)){
+      else if((newDate===currentDate&&newTime<currentTime)){
         message.error("Enter valid time!");
         return;
       }
@@ -119,6 +119,7 @@ const BookingPage = () => {
       );
       // dispatch(hideLoading());
       if (res.data.success) {
+        setIsAvailable(false);
         message.success(res.data.message);
       } else {
         message.error(res.data.message);
