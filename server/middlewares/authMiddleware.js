@@ -12,6 +12,7 @@ module.exports = async (req, res, next) => {
         });
       } else {
         req.body.userId = decode.id;
+        req.body.role=decode.role;
         next();
       }
     });

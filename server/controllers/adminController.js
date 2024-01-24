@@ -3,6 +3,12 @@ const userModel = require("../models/userModels");
 
 const getAllUsersController = async (req, res) => {
   try {
+    if (req.role === "admin") {
+      return res
+        .status(401)
+        .send({ success: false, message: "Unauthorized access" });
+    }
+
     const users = await userModel.find({});
 
     return res.status(200).send({
@@ -10,7 +16,6 @@ const getAllUsersController = async (req, res) => {
       message: "Users data list!",
       data: users,
     });
-
   } catch (error) {
     console.log(error);
 
@@ -24,6 +29,12 @@ const getAllUsersController = async (req, res) => {
 
 const getAllDoctorsController = async (req, res) => {
   try {
+    if (req.role === "admin") {
+      return res
+        .status(401)
+        .send({ success: false, message: "Unauthorized access" });
+    }
+
     const doctors = await doctorModel.find({});
 
     return res.status(200).send({
@@ -31,7 +42,6 @@ const getAllDoctorsController = async (req, res) => {
       message: "Doctors Data list!",
       data: doctors,
     });
-
   } catch (error) {
     console.log(error);
 
@@ -45,6 +55,12 @@ const getAllDoctorsController = async (req, res) => {
 
 const changeAccountStatusController = async (req, res) => {
   try {
+    if (req.role === "admin") {
+      return res
+        .status(401)
+        .send({ success: false, message: "Unauthorized access" });
+    }
+    
     const { doctorId, status } = req.body;
 
     if (status === "approved") {
@@ -67,9 +83,8 @@ const changeAccountStatusController = async (req, res) => {
         message: "Account Status Updated!",
         data: doctor,
       });
-
     } else {
-      let doctor=await doctorModel.findById(doctorId);
+      let doctor = await doctorModel.findById(doctorId);
 
       const user = await userModel.findOne({ _id: doctor.userId });
 
@@ -92,7 +107,7 @@ const changeAccountStatusController = async (req, res) => {
     }
   } catch (error) {
     console.log(error);
-    
+
     return res.status(500).send({
       success: false,
       message: "Error in Account Status",
