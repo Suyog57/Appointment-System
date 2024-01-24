@@ -24,6 +24,12 @@ const getDoctorInfoController = async (req, res) => {
 
 const updateProfileController = async (req, res) => {
   try {
+    if (req.role === "doctor") {
+      return res
+        .status(401)
+        .send({ success: false, message: "Unauthorized access" });
+    }
+
     const doctor = await doctorModel.findOneAndUpdate(
       { userId: req.body.userId },
       req.body,
@@ -68,6 +74,12 @@ const getDoctorByIdController = async (req, res) => {
 
 const doctorAppointmentsController = async (req, res) => {
   try {
+    if (req.role === "doctor") {
+      return res
+        .status(401)
+        .send({ success: false, message: "Unauthorized access" });
+    }
+
     const doctor = await doctorModel.findOne({ userId: req.body.userId });
 
     const appointments = await appointmentModel.find({
@@ -92,6 +104,12 @@ const doctorAppointmentsController = async (req, res) => {
 
 const updateStatusController = async (req, res) => {
   try {
+    if (req.role === "doctor") {
+      return res
+        .status(401)
+        .send({ success: false, message: "Unauthorized access" });
+    }
+    
     const { appointmentsId, status } = req.body;
 
     const appointments = await appointmentModel.findByIdAndUpdate(

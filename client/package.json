@@ -9,6 +9,8 @@
     "@testing-library/user-event": "^13.5.0",
     "antd": "^5.6.1",
     "axios": "^1.4.0",
+    "browserslist": "^4.22.2",
+    "caniuse-lite": "^1.0.30001579",
     "jwt-decode": "^3.1.2",
     "moment": "^2.29.4",
     "react": "^18.2.0",
@@ -20,7 +22,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts  start",
+    "start": "react-scripts --openssl-legacy-provider start",
     "build": "react-scripts --openssl-legacy-provider build",
     "test": "react-scripts --openssl-legacy-provider test",
     "eject": "react-scripts --openssl-legacy-provider eject"

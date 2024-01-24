@@ -93,6 +93,8 @@ const BookingPage = () => {
       if (!date || !time) {
         return alert("Date & Time Required");
       }
+      // console.log(time);
+      // return;
       // dispatch(showLoading());
       const newTime = `${String(time.$d.getHours()).padStart(2, "0")}:${String(
         time.$d.getMinutes()
@@ -101,6 +103,7 @@ const BookingPage = () => {
         date.$d.getMonth() + 1
       ).padStart(2, "0")}-${String(date.$d.getFullYear())}`;
 
+      // return;
       const res = await axios.post(
         `${process.env.REACT_APP_URL}/api/v1/user/book-appointment`,
         {
