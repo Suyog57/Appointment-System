@@ -16,16 +16,31 @@ const Profile = () => {
 
   const handleFinish = async (values) => {
     try {
-      console.log(values.timings[0].$d);
-      const start = `${String(values.timings[0].$d.getHours()).padStart(
-        2,
-        "0"
-      )}:${String(values.timings[0].$d.getMinutes()).padStart(2, "0")}`;
-      const end = `${String(values.timings[1].$d.getHours()).padStart(
-        2,
-        "0"
-      )}:${String(values.timings[1].$d.getMinutes()).padStart(2, "0")}`;
 
+      let start;
+      if (values.timings[0]._i) {
+        start = `${String(values.timings[0]._i.split(":")[0]).padStart(
+          2,
+          "0"
+        )}:${String(values.timings[0]._i.split(":")[1]).padStart(2, "0")}`;
+      } else {
+        start = `${String(values.timings[0].$H).padStart(2, "0")}:${String(
+          values.timings[0].$M
+        ).padStart(2, "0")}`;
+      }
+
+      let end;
+      if (values.timings[1]._i) {
+        end = `${String(values.timings[1]._i.split(":")[0]).padStart(
+          2,
+          "0"
+        )}:${String(values.timings[1]._i.split(":")[1]).padStart(2, "0")}`;
+      }
+      else{
+        end = `${String(values.timings[1].$H).padStart(2, "0")}:${String(
+          values.timings[1].$M
+        ).padStart(2, "0")}`;
+      }
       dispatch(showLoading());
       const res = await axios.post(
         `${process.env.REACT_APP_URL}/api/v1/doctor/updateProfile`,
